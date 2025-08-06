@@ -1,0 +1,129 @@
+; -*- Ledger -*-
+; Demo de archivo Ledger en dólares
+
+; Configuración de moneda
+commodity $
+  format $1,000.00
+  note USD
+
+; ==============================
+;         Plan de cuentas
+; ==============================
+
+; Activos
+account Assets:Bank:Checking
+account Assets:Bank:Savings
+account Assets:Cash
+account Assets:Investments:Stocks
+account Assets:AccountsReceivable
+
+; Pasivos
+account Liabilities:CreditCard:Visa
+account Liabilities:Loan:CarLoan
+
+; Capital
+account Equity:OpeningBalances
+account Equity:Owner
+
+; Ingresos
+account Income:Salary
+account Income:Investments:Dividends
+account Income:Freelance
+
+; Egresos
+account Expenses:Rent
+account Expenses:Utilities
+account Expenses:Food:Groceries
+account Expenses:Food:DiningOut
+account Expenses:Transportation:Gas
+account Expenses:Transportation:Maintenance
+account Expenses:Entertainment
+account Expenses:Travel
+account Expenses:Insurance:Car
+account Expenses:Insurance:Health
+account Expenses:Education
+
+; ==============================
+;         Transacciones
+; ==============================
+
+2025-01-01 * Opening Balances
+  Assets:Bank:Checking              $10,000.00
+  Assets:Bank:Savings               $25,000.00
+  Assets:Cash                        $1,000.00
+  Assets:Investments:Stocks         $15,000.00
+  Liabilities:CreditCard:Visa       $-2,500.00
+  Liabilities:Loan:CarLoan         $-10,000.00
+  Equity:OpeningBalances
+
+2025-01-15 * Paycheck
+  Assets:Bank:Checking              $7,500.00
+  Income:Salary
+
+2025-01-20 * Grocery Shopping
+  Expenses:Food:Groceries           $250.00
+  Assets:Bank:Checking
+
+2025-01-22 * Rent Payment
+  Expenses:Rent                   $1,500.00
+  Assets:Bank:Checking
+
+2025-01-23 * Dinner Out
+  Expenses:Food:DiningOut            $75.00
+  Assets:Bank:Checking
+
+2025-01-25 * Credit Card Payment
+  Liabilities:CreditCard:Visa     $1,200.00
+  Assets:Bank:Checking
+
+2025-02-01 * Paycheck
+  Assets:Bank:Checking              $7,500.00
+  Income:Salary
+
+2025-02-03 * Utilities Bill
+  Expenses:Utilities                $300.00
+  Assets:Bank:Checking
+
+2025-02-10 * Gasoline
+  Expenses:Transportation:Gas       $120.00
+  Assets:Bank:Checking
+
+2025-02-15 * Freelance Project
+  Assets:Bank:Checking              $3,200.00
+  Income:Freelance
+
+2025-02-20 * Car Loan Payment
+  Liabilities:Loan:CarLoan         $500.00
+  Assets:Bank:Checking
+
+2025-02-22 * Stock Dividend
+  Assets:Bank:Savings               $1,000.00
+  Income:Investments:Dividends
+
+2025-02-28 * Vacation Trip
+  Expenses:Travel                 $2,800.00
+  Assets:Bank:Checking
+
+2025-03-01 * Paycheck
+  Assets:Bank:Checking              $7,500.00
+  Income:Salary
+
+2025-03-02 * Health Insurance
+  Expenses:Insurance:Health         $450.00
+  Assets:Bank:Checking
+
+2025-03-10 * Maintenance: Oil Change
+  Expenses:Transportation:Maintenance $90.00
+  Assets:Bank:Checking
+
+2025-03-15 * Monthly Rent
+  Expenses:Rent                   $1,500.00
+  Assets:Bank:Checking
+
+2025-03-18 * Course Subscription
+  Expenses:Education                $300.00
+  Assets:Bank:Checking
+
+2025-03-25 * Entertainment - Concert
+  Expenses:Entertainment            $200.00
+  Assets:Bank:Checking
