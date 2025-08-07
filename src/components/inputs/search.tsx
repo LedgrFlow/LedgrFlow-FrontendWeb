@@ -65,8 +65,9 @@ export function SearchFiles({ onChange, files, onSelect }: SearchFilesProps) {
               <CommandGroup heading="Suggestions">
                 {files.map((file) => (
                   <CommandItem
+                    value={file.id}
                     className="cursor-pointer"
-                    onSelect={() => handleSelectItem(file.id)}
+                    onSelect={(value) => handleSelectItem(value)}
                     key={file.id}
                   >
                     <File className="mr-2 h-4 w-4" />

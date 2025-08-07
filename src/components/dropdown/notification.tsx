@@ -221,7 +221,7 @@ export default function NotificationDropdown({
   }, [notis]);
 
   return (
-    <div className="flex items-center justify-center font-sans p-2">
+    <div className="flex items-center justify-center font-sans">
       <DropdownMenu
         trigger={
           <button className="bg-white dark:bg-black relative p-2 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors">

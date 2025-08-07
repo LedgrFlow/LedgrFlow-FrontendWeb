@@ -26,11 +26,11 @@ type Props = {
 
 const stylesBadges = {
   income:
-    "w-fit border border-green-300/70 px-3 py-1 rounded-xl text-xs text-green-200 bg-green-400/10",
+    "w-fit border border-green-300/70 px-3 py-1 rounded-xl text-xs dark:text-green-200 bg-green-400/10 text-green-600",
   expense:
-    "w-fit border border-pink-300/70 px-3 py-1 rounded-xl text-xs text-pink-200 bg-pink-400/10",
+    "w-fit border border-pink-300/70 px-3 py-1 rounded-xl text-xs dark:text-pink-200 bg-pink-400/10 text-pink-600",
   result:
-    "w-fit border border-yellow-300/70 px-3 py-1 rounded-xl text-xs text-yellow-200 bg-yellow-400/10",
+    "w-fit border border-yellow-300/70 px-3 py-1 rounded-xl text-xs dark:text-yellow-200 bg-yellow-400/10 text-yellow-600",
 };
 
 export function IncomeStatement({
@@ -56,7 +56,7 @@ export function IncomeStatement({
       index++;
 
       return (
-        <TableRow key={`${type}-${i}`}>
+        <TableRow key={`${type}-${i}`} className="bg-blue-200/30 dark:bg-blue-950/20 border-none hover:bg-blue-500/15 dark:hover:bg-muted">
           <TableCell className="w-[fit-content] text-center">{index}</TableCell>
           <TableCell>
             <span className={clsx(stylesBadges[type])}>
@@ -73,14 +73,14 @@ export function IncomeStatement({
 
     return (
       <>
-        <TableRow className="font-semibold">
+        <TableRow className="font-semibold bg-background hover:bg-blue-500/15 dark:hover:bg-muted">
           <TableCell></TableCell>
           <TableCell colSpan={3}>
             {type === "income" ? "Ingresos" : "Egresos"}
           </TableCell>
         </TableRow>
         {rows}
-        <TableRow className="">
+        <TableRow className="hover:bg-blue-500/15 dark:hover:bg-muted">
           <TableCell></TableCell>
           <TableCell className="font-semibold">Total</TableCell>
           <TableCell className="text-right font-bold" colSpan={2}>
@@ -96,7 +96,7 @@ export function IncomeStatement({
       <ScrollArea className="rounded-md border w-full">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted">
+            <TableRow className="bg-background hover:bg-blue-500/15 dark:hover:bg-muted">
               <TableHead className="text-center">Nº</TableHead>
               <TableHead className="w-full">Concepto</TableHead>
               <TableHead className="text-right">Saldo</TableHead>
@@ -111,7 +111,7 @@ export function IncomeStatement({
             {renderSection(expenses_details, "expense")}
 
             {/* Resultado */}
-            <TableRow className="bg-muted font-bold">
+            <TableRow className="bg-background font-bold hover:bg-blue-500/15 dark:hover:bg-muted">
               <TableCell></TableCell>
               <TableCell>
                 <span className={clsx(stylesBadges.result)}>

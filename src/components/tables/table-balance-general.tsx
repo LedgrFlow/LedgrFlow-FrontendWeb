@@ -69,7 +69,7 @@ export function BalanceGeneral({
     // Si no hay coincidencia o es una clave ignorada, saltar
     if (!parentKey || ignoreKeys.includes(parentKey)) continue;
 
-    const sectionLabel = parentsAccounts[parentKey];
+    const sectionLabel = parentsAccounts[parentKey as keyof Parents];
     const sum = Object.values(balances).reduce((acc, val) => acc + val, 0);
     const badge = returnBadgeColorByParent(mainPrefix, parentsAccounts);
     const sec = sections[sectionLabel];
@@ -79,14 +79,19 @@ export function BalanceGeneral({
     index++;
 
     sec.rows.push(
-      <TableRow key={account}>
+      <TableRow
+        key={account}
+        className="bg-blue-200/30 dark:bg-blue-950/20 border-none hover:bg-blue-500/15 dark:hover:bg-muted"
+      >
         <TableCell className="w-[fit-content] text-center">{index}</TableCell>
         <TableCell>
           <span className={clsx(badge)}>{account.replaceAll(":", " > ")}</span>
         </TableCell>
-        <TableCell className="text-right">{formatCurrency(sum)}</TableCell>
         <TableCell className="text-right">
-          {formatCurrency(sec.total)}
+          {formatCurrency(Math.abs(sum))}
+        </TableCell>
+        <TableCell className="text-right">
+          {formatCurrency(Math.abs(sec.total))}
         </TableCell>
       </TableRow>
     );
@@ -103,7 +108,10 @@ export function BalanceGeneral({
       index++;
 
       utilidadRows.push(
-        <TableRow key={`utility-${currency}`}>
+        <TableRow
+          key={`utility-${currency}`}
+          className="bg-blue-200/40 dark:bg-background-950 border-none hover:bg-blue-500/15 dark:hover:bg-muted"
+        >
           <TableCell className="w-[fit-content] text-center">{index}</TableCell>
           <TableCell>
             <span className={clsx(stylesBadges.Utility)}>{label}</span>
@@ -124,7 +132,7 @@ export function BalanceGeneral({
       <ScrollArea className="rounded-md border w-full">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted">
+            <TableRow className="bg-background">
               <TableHead className="text-center px-3">Nº</TableHead>
               <TableHead className="w-full">Concepto</TableHead>
               <TableHead className="text-right">Saldo</TableHead>
@@ -140,16 +148,16 @@ export function BalanceGeneral({
               label = label.replaceAll("Unknown-", "");
               return (
                 <React.Fragment key={key}>
-                  <TableRow className="font-semibold">
+                  <TableRow className="font-semibold bg-background/40 dark:bg-background-950 border-none hover:bg-blue-500/15 dark:hover:bg-muted">
                     <TableCell></TableCell>
                     <TableCell colSpan={3}>{label}</TableCell>
                   </TableRow>
                   {sections[label]?.rows}
-                  <TableRow className="font-bold">
+                  <TableRow className="font-bold bg-background/40 dark:bg-background-950 border-none hover:bg-blue-500/15 dark:hover:bg-muted">
                     <TableCell></TableCell>
                     <TableCell>{`Total ${label}`}</TableCell>
                     <TableCell className="text-right" colSpan={2}>
-                      {formatCurrency(sections[label]?.total ?? 0)}
+                      {formatCurrency(Math.abs(sections[label]?.total ?? 0))}
                     </TableCell>
                   </TableRow>
                   {key === "Equity" && utilidadRows}
@@ -161,7 +169,7 @@ export function BalanceGeneral({
               "Equity" in parentsAccounts &&
               sections[parentsAccounts["Liabilities"]] &&
               sections[parentsAccounts["Equity"]] && (
-                <TableRow className="bg-muted font-extrabold">
+                <TableRow className="bg-background font-extrabold hover:bg-blue-500/15 dark:hover:bg-muted">
                   <TableCell></TableCell>
                   <TableCell>Pasivo + Capital</TableCell>
                   <TableCell className="text-right" colSpan={2}>

@@ -262,7 +262,7 @@ export function EditorView({
   };
 
   return (
-    <div style={{ height: "100vh", width: "100%" }} key={theme}>
+    <div style={{ height: "110vh", width: "100%" }} key={theme}>
       <Editor
         className="h-full w-full"
         defaultLanguage={language}

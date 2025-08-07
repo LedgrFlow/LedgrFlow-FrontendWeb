@@ -83,7 +83,7 @@ export function TradicionalJournal({
     <div className="space-y-4">
       {/* Filtros */}
       <div className="flex flex-wrap gap-4 items-end w-full">
-        <div className="bg-neutral-900 w-full rounded-md flex items-center justify-between max-w-[400px] ">
+        <div className="bg-white dark:bg-neutral-900 w-full rounded-md flex items-center justify-between max-w-[400px] ">
           <Search className="w-5 h-5 mr-2" />
           <input
             type="text"
@@ -95,10 +95,10 @@ export function TradicionalJournal({
       </div>
 
       {/* Tabla */}
-      <ScrollArea className="rounded-md border w-full">
+      <ScrollArea className={clsx("rounded-md w-full")}>
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted">
+            <TableRow className="bg-background">
               <TableHead className="px-3">Nº</TableHead>
               <TableHead className="w-[100px] px-7">Fecha</TableHead>
               <TableHead className="w-full">Cuenta</TableHead>
@@ -112,6 +112,12 @@ export function TradicionalJournal({
               const negative = entry.accounts.filter((a) => a.amount < 0);
               const allAccounts = [...positive, ...negative];
 
+              // Alternar colores por transacción
+              const rowBgClass =
+                i % 2 === 0
+                  ? "bg-blue-200/20 dark:bg-blue-950/20 border-none"
+                  : "bg-blue-300/30 dark:bg-blue-500/10 border-none" ;
+
               return (
                 <>
                   {allAccounts.map((acc, j) => {
@@ -124,7 +130,7 @@ export function TradicionalJournal({
                     indexCounter = j === 0 ? indexCounter + 1 : indexCounter;
 
                     return (
-                      <TableRow key={`${i}-${j}`}>
+                      <TableRow key={`${i}-${j}`} className={clsx("border-none hover:bg-blue-500/15 dark:hover:bg-muted", rowBgClass)}>
                         <TableCell className="text-center">
                           {j === 0 ? indexCounter : ""}
                         </TableCell>
@@ -159,8 +165,8 @@ export function TradicionalJournal({
                       </TableRow>
                     );
                   })}
-                  <TableRow>
-                    <TableCell colSpan={4}>
+                  <TableRow className={clsx(rowBgClass, "border-none hover:bg-blue-500/15 dark:hover:bg-muted")}>
+                    <TableCell colSpan={5}>
                       <p className="italic text-muted-foreground text-sm mt-[-4px]">
                         {entry.description}
                       </p>
@@ -170,7 +176,7 @@ export function TradicionalJournal({
               );
             })}
 
-            <TableRow className="bg-muted font-bold">
+            <TableRow className="bg-background font-bold py-3">
               <TableCell colSpan={2}>Totales</TableCell>
               <TableCell className="text-right"></TableCell>
               <TableCell className="text-right">

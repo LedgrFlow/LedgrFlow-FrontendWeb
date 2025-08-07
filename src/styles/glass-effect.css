@@ -1,0 +1,92 @@
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(1.25em);
+  -webkit-backdrop-filter: blur(1.25em);
+  border-radius: 1.25em;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  z-index: 1;
+  color: inherit;
+}
+
+/* Tema claro por defecto */
+html.light .glass-card {
+  box-shadow: 0 0.5em 2em rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 1.25em 0.625em rgba(255, 255, 255, 0.6);
+}
+
+html.light .glass-card::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+}
+
+html.light .glass-card::after {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    transparent,
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
+/* Tema oscuro con la clase dark en html */
+html.dark .glass-card {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 0 8px 2px rgba(255, 255, 255, 0.05);
+}
+
+html.dark .glass-card::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+}
+
+html.dark .glass-card::after {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.1),
+    transparent,
+    rgba(255, 255, 255, 0.05)
+  );
+}
+
+/* Tema claro */
+@media (prefers-color-scheme: light) {
+  .glass-card {
+    box-shadow: 0 0.5em 2em rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 0 1.25em 0.625em rgba(255, 255, 255, 0.6);
+  }
+
+  .glass-card::before {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.8),
+      transparent
+    );
+  }
+
+  .glass-card::after {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.8),
+      transparent,
+      rgba(255, 255, 255, 0.3)
+    );
+  }
+}

@@ -1,13 +1,18 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import clsx from "clsx"
+import { useUI } from "@/contexts/UIContext"
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
+
+  const { glassMode } = useUI();
+
   return (
     <div
       data-slot="card"
       className={cn(
-        "bg-neutral-50 dark:bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 ",
+        clsx("text-card-foreground flex flex-col gap-6 rounded-xl py-6", glassMode ? "glass-card" : "bg-background"),
         className
       )}
       {...props}
@@ -75,7 +80,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-footer"
-      className={cn("flex items-center px-6 [.border-t]:pt-6", className)}
+      className={cn("flex text-foreground/70 items-center px-6 [.border-t]:pt-6", className)}
       {...props}
     />
   )

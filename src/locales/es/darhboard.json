@@ -1,0 +1,160 @@
+{
+  "main": {
+    "title": "Dashboard",
+    "description": "Toma decisiones informadas con una vista general de tu situación financiera basada en {{fileName}}."
+  },
+  "selects": {
+    "months": {
+      "label": "Meses disponibles",
+      "placeholder": "Selecciona un mes",
+      "all": "Último"
+    }
+  },
+
+  "cards": {
+    "balance": {
+      "title": "Balance actual",
+      "up": {
+        "title": "Balance actual",
+        "description": "Aumentó un {{value}}% este mes",
+        "sub": "Balance neto después de todas las transacciones"
+      },
+      "down": {
+        "title": "Balance actual",
+        "description": "Disminuyó un {{value}}% este mes",
+        "sub": "Balance neto después de todas las transacciones"
+      },
+      "same": {
+        "title": "Balance actual",
+        "description": "Sin cambios este mes",
+        "sub": "Balance neto después de todas las transacciones"
+      }
+    },
+    "incomes": {
+      "title": "Ingresos actuales",
+      "up": {
+        "title": "Ingresos actuales",
+        "description": "Aumentaron un {{value}}% respecto al mes pasado",
+        "sub": "Total de ingresos recibidos en este periodo"
+      },
+      "down": {
+        "title": "Ingresos actuales",
+        "description": "Disminuyeron un {{value}}% respecto al mes pasado",
+        "sub": "Total de ingresos recibidos en este periodo"
+      },
+      "same": {
+        "title": "Ingresos actuales",
+        "description": "Ingresos iguales al mes anterior",
+        "sub": "Total de ingresos recibidos en este periodo"
+      }
+    },
+    "expenses": {
+      "title": "Egresos actuales",
+      "up": {
+        "title": "Egresos actuales",
+        "description": "Aumentaron un {{value}}% este mes",
+        "sub": "Incluye todos los egresos registrados"
+      },
+      "down": {
+        "title": "Egresos actuales",
+        "description": "Disminuyeron un {{value}}% este mes",
+        "sub": "Incluye todos los egresos registrados"
+      },
+      "same": {
+        "title": "Egresos actuales",
+        "description": "Sin cambios en egresos",
+        "sub": "Incluye todos los egresos registrados"
+      }
+    },
+    "spendingRate": {
+      "title": "% de Ingresos Gastados",
+      "up": {
+        "title": "% de Ingresos Gastados",
+        "description": "Subió a {{value}}% del ingreso",
+        "sub": "Mayor porcentaje indica menor ahorro"
+      },
+      "down": {
+        "title": "% de Ingresos Gastados",
+        "description": "Bajó a {{value}}% del ingreso",
+        "sub": "Menor porcentaje significa mayor ahorro"
+      },
+      "same": {
+        "title": "% de Ingresos Gastados",
+        "description": "Se mantuvo en {{value}}% del ingreso",
+        "sub": "Proporción estable de gasto vs ingreso"
+      }
+    }
+  },
+  "linechart": {
+    "title": "Flujo Diario de Ingresos y Gastos",
+    "description": "Este gráfico muestra el flujo diario de ingresos y gastos en {{fileName}}.",
+    "time": "Mostrando ingresos y egresos de los últimos {{timeSleep}}",
+    "labels": {
+      "incomes": "Ingresos",
+      "expenses": "Gastos"
+    },
+    "trendMessages": {
+      "up": "Tendencia al alza del {{percentage}} por ciento",
+      "down": "Tendencia a la baja del {{percentage}} este mes",
+      "same": "Sin cambios significativos este mes"
+    }
+  },
+  "piechart": {
+    "incoming": {
+      "title": "Distribución de Ingresos",
+      "time": "Periodo {{timeRange}}",
+      "trendMessages": {
+        "up": "Los ingresos aumentaron un {{percentage}} este mes",
+        "down": "Los ingresos disminuyeron un {{percentage}} este mes",
+        "same": "Los ingresos no cambiaron este mes"
+      },
+      "sub": "Total acumulado del ultimo mes"
+    },
+    "expenses": {
+      "title": "Distribución de Egresos",
+      "time": "Periodo {{timeRange}}",
+      "trendMessages": {
+        "up": "Los egresos aumentaron un {{percentage}} este mes",
+        "down": "Los egresos disminuyeron un {{percentage}} este mes",
+        "same": "Los egresos no cambiaron este mes"
+      },
+      "sub": "Total acumulado del ultimo mes"
+    }
+  },
+  "balance_line": {
+    "title": "Balance General",
+    "time": "Periodo {{timeRange}}",
+    "trendMessages": {
+      "up": "El balance aumentó un {{percentage}} este mes",
+      "down": "El balance disminuyó un {{percentage}} este mes",
+      "same": "El balance no cambió este mes"
+    },
+    "sub": "Balance de este mes"
+  },
+  "barchart": {
+    "balance": {
+      "title": "Balance General",
+      "time": "Periodo {{timeRange}}",
+      "trendMessages": {
+        "up": "El balance aumentó un {{percentage}} este mes",
+        "down": "El balance disminuyó un {{percentage}} este mes",
+        "same": "El balance no cambió este mes"
+      },
+      "sub": "Balance de este mes"
+    }
+  },
+  "emptyState": {
+    "noFile": {
+      "title": "Aún no has seleccionado ningún archivo",
+      "sub": "Tus archivos aparecerán aquí una vez que subas o selecciones uno. ¡Vamos a empezar!"
+    },
+    "errorFile": {
+      "title": "Error al procesar el archivo",
+      "sub": "Hubo un problema al procesar tu archivo. Por favor intenta nuevamente con uno válido."
+    }
+  },
+  "load": {
+    "title": "Espere un momento",
+    "sub": "Estamos procesando tu archivo. Por favor, espera un momento."
+  }
+}

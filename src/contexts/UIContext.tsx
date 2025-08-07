@@ -8,6 +8,8 @@ interface ProviderProps {
 
 interface UIContextType {
   selectTheme: (theme: string) => void;
+  glassMode: boolean;
+  theme: string | undefined;
 }
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
@@ -28,6 +30,7 @@ export const useUI = () => {
 export const UIProvider: React.FC<ProviderProps> = ({ children }) => {
   const { settings } = useAuth();
   const [theme, setTheme] = useState<string | undefined>();
+  const [glassMode, setGlassMode] = useState<boolean>(true);
 
   /** This function is used to set the theme */
   function selectTheme(theme: string) {
@@ -71,6 +74,8 @@ export const UIProvider: React.FC<ProviderProps> = ({ children }) => {
 
   const value: UIContextType = {
     selectTheme,
+    glassMode,
+    theme,
   };
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;

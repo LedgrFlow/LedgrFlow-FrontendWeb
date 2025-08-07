@@ -53,7 +53,11 @@ export function TableBalanceByDetail({
     index++;
 
     rows.push(
-      <TableRow key={`${fullPath.join("-")}-${index}`}>
+      <TableRow key={`${fullPath.join("-")}-${index}`} 
+      
+        className="transition-colors duration-150 border-neutral-300/10 hover:bg-blue-500/15 dark:hover:bg-muted"
+      
+      >
         <TableCell className="text-center">{index}</TableCell>
         <TableCell>
           <div
@@ -100,7 +104,7 @@ export function TableBalanceByDetail({
       <ScrollArea className="rounded-md border w-full">
         <Table>
           <TableHeader>
-            <TableRow className="bg-muted">
+            <TableRow className="bg-background">
               <TableHead className="text-center">Nº</TableHead>
               <TableHead className="w-full">Concepto</TableHead>
               <TableHead className="text-right">Saldo</TableHead>

@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "tailwindcss-animated";
 @import "./styles/custom-animations.css";
+@import "./styles/glass-effect.css";
 
 @custom-variant dark (&:is(.dark *));
 

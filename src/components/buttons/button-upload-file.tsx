@@ -1,11 +1,16 @@
 import { Button } from "../ui/button";
 import { useEffect, useRef, useState } from "react";
+import { Upload } from "lucide-react";
 
 interface ButtonUploadFileProps {
   onChange?: (value: FileList | null | undefined) => void;
+  useIcon?: boolean;
 }
 
-export function ButtonUploadFile({onChange}: ButtonUploadFileProps) {
+export function ButtonUploadFile({
+  onChange,
+  useIcon = true,
+}: ButtonUploadFileProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<FileList>();
 
@@ -20,7 +25,9 @@ export function ButtonUploadFile({onChange}: ButtonUploadFileProps) {
 
   return (
     <div className="flex items-center justify-center">
-      <Button onClick={() => inputRef.current?.click()}>Subir archivos</Button>
+      <Button className="flex items-center gap-2 justify-center" onClick={() => inputRef.current?.click()}>
+        {useIcon ? <Upload className="w-6 h-6" /> : "Subir archivos"}
+      </Button>
       <input
         type="file"
         className="hidden"
