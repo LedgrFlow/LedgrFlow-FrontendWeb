@@ -15,6 +15,7 @@ export function Dashboard() {
     cashflows,
     dailyData,
     balanceByDay,
+    currency,
     analysis,
     buildMonths,
     selectMonth,
@@ -51,6 +52,7 @@ export function Dashboard() {
           percentage={cashflows?.net.growth ?? 0}
           usePercentage
           title={t("cards.balance.title")}
+          currency={currency}
           descriptions={[
             t("cards.balance.up.description", {
               value: cashflows?.net.growth,
@@ -71,6 +73,7 @@ export function Dashboard() {
           isNeutral
           useBackground={false}
           percentage={cashflows?.in.growth ?? 0}
+          currency={currency}
           usePercentage
           title={t("cards.incomes.title")}
           descriptions={[
@@ -93,6 +96,7 @@ export function Dashboard() {
           isNeutral
           useBackground={false}
           percentage={cashflows?.out.growth ?? 0}
+          currency={currency}
           usePercentage
           title="Egresos actuales"
           descriptions={[
@@ -115,6 +119,7 @@ export function Dashboard() {
           isNeutral
           useBackground={false}
           percentage={cashflows?.ratio.value ?? 0}
+          currency={currency}
           useStylePercentage
           // usePercentage
           title={t("cards.spendingRate.title")}
@@ -262,10 +267,20 @@ export function Dashboard() {
           }}
           xKey="date"
           title={t("balance_line.title")}
-          description={t("balance_line.sub")}
-          footerText={t("balance_line.time", {
+          description={t("balance_line.time", {
             timeRange: new DateFormatter().toReadable(parser?.period[0] ?? ""),
           })}
+          percentage={cashflows?.net.growth ?? 0}
+          descriptions={[
+            t("balance_line.trendMessages.up", {
+              percentage: Math.abs(cashflows?.net.growth ?? 0).toFixed(1),
+            }),
+            t("balance_line.trendMessages.down", {
+              percentage: Math.abs(cashflows?.net.growth ?? 0).toFixed(1),
+            }),
+            t("balance_line.trendMessages.same"),
+          ]}
+          footerText={t("balance_line.sub")}
         />
       </section>
     </div>

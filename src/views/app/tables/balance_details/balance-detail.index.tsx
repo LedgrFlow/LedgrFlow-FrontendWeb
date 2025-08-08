@@ -5,7 +5,7 @@ import { RegisterViewBase } from "../layouts/register-base";
 import { TableBalanceByDetail } from "@/components/tables/table-balance-details";
 
 export default function BalanceDetailView() {
-  const { parser, totals } = useLedger();
+  const { parser, totals, currency } = useLedger();
 
   const evaluateTotals = useMemo(
     () =>
@@ -21,6 +21,7 @@ export default function BalanceDetailView() {
             <CardGradient
               value={totals?.credit ?? 0}
               isNeutral
+              currency={currency}
               useBackground={false}
               title="Saldo credito"
               percentage={evaluateTotals ? 1 : -1}
@@ -30,6 +31,7 @@ export default function BalanceDetailView() {
             <CardGradient
               value={totals?.debit ?? 0}
               isNeutral
+              currency={currency}
               useBackground={false}
               percentage={evaluateTotals ? 1 : -1}
               descriptions={[
@@ -42,6 +44,7 @@ export default function BalanceDetailView() {
             <CardGradient
               value={parser?.transactions.length ?? 0}
               isNeutral
+              currency={currency}
               useBackground={false}
               useStyleNeutral
               title="Transacciones"
@@ -52,7 +55,12 @@ export default function BalanceDetailView() {
         </div>
 
         <div className="w-full  m-auto">
-          <TableBalanceByDetail style="complete" data={parser?.balances_by_details ?? {}} parents={parser?.parents} />
+          <TableBalanceByDetail
+            currency={currency}
+            style="complete"
+            data={parser?.balances_by_details ?? {}}
+            parents={parser?.parents}
+          />
         </div>
       </div>
     </RegisterViewBase>

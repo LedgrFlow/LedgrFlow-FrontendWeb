@@ -125,8 +125,8 @@
     "title": "Balance General",
     "time": "Periodo {{timeRange}}",
     "trendMessages": {
-      "up": "El balance aumentó un {{percentage}} este mes",
-      "down": "El balance disminuyó un {{percentage}} este mes",
+      "up": "El balance aumentó un {{percentage}}% este mes",
+      "down": "El balance disminuyó un {{percentage}}% este mes",
       "same": "El balance no cambió este mes"
     },
     "sub": "Balance de este mes"

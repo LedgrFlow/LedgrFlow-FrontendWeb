@@ -1,4 +1,6 @@
 import { GenericLineChart } from "@/components/skeletons/chart-skeleton";
+import { useUI } from "@/contexts/UIContext";
+import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 function generateDummyData(
@@ -42,6 +44,7 @@ export function DashboardNotFile({
   children,
   title,
 }: DashboardNotFileProps) {
+  const {glassMode} = useUI();
   const [dummyData, setDummyData] = useState(
     generateDummyData("2024-01-01", 180)
   );
@@ -57,8 +60,8 @@ export function DashboardNotFile({
   }, []);
 
   return (
-    <div className="px-7 py-9 space-y-8 text-black dark:text-white h-full min-h-screen relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-neutral-100 dark:to-black z-10 flex justify-center items-center">
+    <div className="px-7 py-9 space-y-8 text-black dark:text-white h-full min-h-screen overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-neutral-100/70 to-neutral-100/50 dark:via-black/30 dark:to-black/70 z-10 flex justify-center items-center">
         <div className="max-w-lg text-center text-black dark:text-white">
           <h1 className="text-3xl font-semibold">
             {title ?? "No has seleccionado ningún archivo"}
@@ -79,7 +82,7 @@ export function DashboardNotFile({
           return (
             <div
               key={index}
-              className="flex-1 h-[200px] rounded-xl dark:bg-neutral-900 bg-neutral-100 w-full"
+              className={clsx("flex-1 h-[200px] rounded-xl w-full", glassMode ? "glass-card" : "dark:bg-neutral-900 bg-neutral-100")}
             ></div>
           );
         })}

@@ -1,15 +1,21 @@
 import { CardGradient } from "@/components/cards/card-gradient";
-import { BalanceGeneral } from "@/components/tables/table-balance-general";
+import { BalanceGeneral } from "@/views/app/tables/balance/balance.table";
 import { useLedger } from "@/contexts/LedgerContext";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { RegisterViewBase } from "../layouts/register-base";
 
 export default function BalanceView() {
-  const { parser, totals } = useLedger();
+  const { parser, totals, currency } = useLedger();
+  const [sums, setSums] = useState({
+    totalAssets: 0,
+    totalLiabilitiesAndEquity: 0,
+  });
 
   const evaluateTotals = useMemo(
     () =>
-      totals?.debit && totals?.credit ? totals?.debit == totals.credit : false,
+      sums?.totalAssets && sums?.totalLiabilitiesAndEquity
+        ? sums?.totalAssets == sums.totalLiabilitiesAndEquity
+        : false,
     [totals]
   );
 
@@ -19,19 +25,21 @@ export default function BalanceView() {
         <div>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <CardGradient
-              value={totals?.credit ?? 0}
+              value={Math.abs(sums.totalAssets ?? 0)}
               isNeutral
+              currency={currency}
               title="Saldo credito"
-              percentage={evaluateTotals ? 1 : -1}
+              percentage={evaluateTotals ? -1 : 1}
               useBackground={false}
               descriptions={["Saldo del último periodo"]}
               subs={["El balance esta cuadrado", "El balance esta descuadrado"]}
             />
             <CardGradient
-              value={totals?.debit ?? 0}
+              value={Math.abs(sums.totalLiabilitiesAndEquity ?? 0)}
               isNeutral
+              currency={currency}
               useBackground={false}
-              percentage={evaluateTotals ? 1 : -1}
+              percentage={evaluateTotals ? -1 : 1}
               descriptions={[
                 "Saldo del último periodo",
                 "Saldo del último periodo",
@@ -42,6 +50,7 @@ export default function BalanceView() {
             <CardGradient
               value={parser?.transactions.length ?? 0}
               isNeutral
+              currency={currency}
               useBackground={false}
               useStyleNeutral
               title="Transacciones"
@@ -53,9 +62,13 @@ export default function BalanceView() {
 
         <div className="w-full  m-auto">
           <BalanceGeneral
+            callback={(data) => {
+              if (data) setSums(data);
+            }}
             utility={parser?.state_results?.utility_by_currency ?? {}}
             data={parser?.balances ?? {}}
             parentsAccounts={parser?.parents}
+            currency={currency}
           />
         </div>
       </div>

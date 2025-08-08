@@ -11,79 +11,22 @@ import { DateFormatter } from "@/utils/date";
 import { formatCurrency } from "@/utils/format";
 import clsx from "clsx";
 import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
-import { returnBadgeColorByParent, type Parents } from "./styles-dinamics";
-
-type AccountEntry = {
-  account: string;
-  amount: number;
-  subAccounts: string[];
-  unit: string;
-};
-
-type JournalEntry = {
-  date: string;
-  accounts: AccountEntry[];
-  description: string;
-};
-
-type Props = {
-  data: JournalEntry[];
-  currency?: string;
-  parentsAccounts?: Parents;
-};
+import { returnBadgeColorByParent } from "@/views/app/tables/utils/styles";
+import { useTraditionalJournal } from "./traditional-journal.controller";
 
 const formDate = new DateFormatter();
 
-export function TradicionalJournal({
-  data,
-  currency = "USD",
-  parentsAccounts = {
-    Assets: "Assets",
-    Liabilities: "Liabilities",
-    Equity: "Equity",
-    Income: "Income",
-    Expenses: "Expenses",
-  },
-}: Props) {
-  const [search, setSearch] = useState("");
-  const [minAmount, setMinAmount] = useState("");
-  const [maxAmount, setMaxAmount] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+export function TradicionalJournal() {
+  const { filteredData, currency, parentsAccounts, search, setSearch } =
+    useTraditionalJournal();
 
   let indexCounter = 0;
-
-  const filteredData = useMemo(() => {
-    return data.filter((entry) => {
-      const entryDate = new Date(entry.date);
-      const entryMatchesText =
-        entry.description.toLowerCase().includes(search.toLowerCase()) ||
-        entry.accounts.some((a) =>
-          a.account.toLowerCase().includes(search.toLowerCase())
-        );
-
-      const entryMatchesDate =
-        (!startDate || entryDate >= new Date(startDate)) &&
-        (!endDate || entryDate <= new Date(endDate));
-
-      const entryMatchesAmount = entry.accounts.some((a) => {
-        const amount = Math.abs(a.amount);
-        const minOk = !minAmount || amount >= parseFloat(minAmount);
-        const maxOk = !maxAmount || amount <= parseFloat(maxAmount);
-        return minOk && maxOk;
-      });
-
-      return entryMatchesText && entryMatchesDate && entryMatchesAmount;
-    });
-  }, [data, search, minAmount, maxAmount, startDate, endDate]);
-
   let totalDebe = 0;
   let totalHaber = 0;
 
   return (
     <div className="space-y-4">
-      {/* Filtros */}
+      {/* Filtro */}
       <div className="flex flex-wrap gap-4 items-end w-full">
         <div className="bg-white dark:bg-neutral-900 w-full rounded-md flex items-center justify-between max-w-[400px] ">
           <Search className="w-5 h-5 mr-2" />
@@ -91,13 +34,14 @@ export function TradicionalJournal({
             type="text"
             placeholder="Busca transaccion"
             className="input input-sm px-3 py-1 border rounded-md text-sm w-full"
+            value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
       </div>
 
       {/* Tabla */}
-      <ScrollArea className={clsx("rounded-md w-full")}>
+      <ScrollArea className="rounded-md w-full">
         <Table>
           <TableHeader>
             <TableRow className="bg-background">
@@ -114,7 +58,6 @@ export function TradicionalJournal({
               const negative = entry.accounts.filter((a) => a.amount < 0);
               const allAccounts = [...positive, ...negative];
 
-              // Alternar colores por transacción
               const rowBgClass =
                 i % 2 === 0
                   ? "bg-blue-200/20 dark:bg-blue-950/20 border-none"
@@ -140,9 +83,9 @@ export function TradicionalJournal({
                         ? currency
                         : acc.unit;
 
-                        console.log(acc)
                     if (isDebe) totalDebe += acc.amount;
                     else totalHaber += Math.abs(acc.amount);
+
                     indexCounter = j === 0 ? indexCounter + 1 : indexCounter;
 
                     return (
@@ -187,6 +130,8 @@ export function TradicionalJournal({
                       </TableRow>
                     );
                   })}
+
+                  {/* Totales por transacción */}
                   <TableRow
                     className={clsx(
                       totalDebeByTransaction != totalHaberByTransaction
@@ -211,9 +156,10 @@ export function TradicionalJournal({
               );
             })}
 
+            {/* Totales finales */}
             <TableRow className="bg-background font-bold py-3">
               <TableCell colSpan={2}>Totales</TableCell>
-              <TableCell className="text-right"></TableCell>
+              <TableCell />
               <TableCell className="text-right">
                 {formatCurrency(totalDebe, currency)}
               </TableCell>

@@ -22,6 +22,7 @@ type Props = {
   income_details: DetailEntry[];
   expenses_details: DetailEntry[];
   utility_by_currency: Record<string, number>;
+  currency?: string;
 };
 
 const stylesBadges = {
@@ -37,6 +38,7 @@ export function IncomeStatement({
   income_details,
   expenses_details,
   utility_by_currency,
+  currency = "USD",
 }: Props) {
   let index = 0;
 
@@ -50,22 +52,32 @@ export function IncomeStatement({
     const rows = data.map((entry, i) => {
       const [key, value] = Object.entries(entry)[0];
       const amount = value.amount;
-      const currency = value.currency;
+      const newCurrency =
+        !value.currency || ["$", "N/A"].includes(value.currency)
+          ? currencyExternal
+          : value.currency;
+
+      console.log(newCurrency);
       sum += amount;
 
       index++;
 
       return (
-        <TableRow key={`${type}-${i}`} className="bg-blue-200/30 dark:bg-blue-950/20 border-none hover:bg-blue-500/15 dark:hover:bg-muted">
+        <TableRow
+          key={`${type}-${i}`}
+          className="bg-blue-200/30 dark:bg-blue-950/20 border-none hover:bg-blue-500/15 dark:hover:bg-muted"
+        >
           <TableCell className="w-[fit-content] text-center">{index}</TableCell>
           <TableCell>
             <span className={clsx(stylesBadges[type])}>
               {key.replaceAll(":", " > ")}
             </span>
           </TableCell>
-          <TableCell className="text-right">{formatCurrency(amount)}</TableCell>
           <TableCell className="text-right">
-            {formatCurrency(sum, currency)}
+            {formatCurrency(amount, newCurrency)}
+          </TableCell>
+          <TableCell className="text-right">
+            {formatCurrency(sum, newCurrency)}
           </TableCell>
         </TableRow>
       );
@@ -80,11 +92,11 @@ export function IncomeStatement({
           </TableCell>
         </TableRow>
         {rows}
-        <TableRow className="hover:bg-blue-500/15 dark:hover:bg-muted">
+        <TableRow className="bg-background hover:bg-blue-500/15 dark:hover:bg-muted">
           <TableCell></TableCell>
           <TableCell className="font-semibold">Total</TableCell>
           <TableCell className="text-right font-bold" colSpan={2}>
-            {formatCurrency(sum, currencyExternal)}
+            {formatCurrency(sum)}
           </TableCell>
         </TableRow>
       </>
@@ -105,10 +117,10 @@ export function IncomeStatement({
           </TableHeader>
           <TableBody>
             {/* Ingresos */}
-            {renderSection(income_details, "income")}
+            {renderSection(income_details, "income", currency)}
 
             {/* Egresos */}
-            {renderSection(expenses_details, "expense")}
+            {renderSection(expenses_details, "expense", currency)}
 
             {/* Resultado */}
             <TableRow className="bg-background font-bold hover:bg-blue-500/15 dark:hover:bg-muted">

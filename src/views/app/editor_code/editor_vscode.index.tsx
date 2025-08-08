@@ -6,7 +6,7 @@ import { useEditorMonaco } from "./controllers/editor_monaco.controller";
 import { useUI } from "@/contexts/UIContext";
 
 export default function Editor() {
-  const {glassMode} = useUI();
+  const { glassMode } = useUI();
   const {
     contentFile,
     currentFile,
@@ -23,6 +23,7 @@ export default function Editor() {
     totals,
     saveFile,
     setCurrentContent,
+    parser,
   } = useEditorMonaco();
 
   return (
@@ -33,7 +34,12 @@ export default function Editor() {
       >
         {/* Editor */}
         <div className="w-full">
-          <div className={clsx("w-full overflow-hidden mb-3 flex justify-between", glassMode ? "glass-card" : "bg-neutral-900")}>
+          <div
+            className={clsx(
+              "w-full overflow-hidden mb-3 flex justify-between",
+              glassMode ? "glass-card" : "bg-neutral-900"
+            )}
+          >
             <div className="flex items-center">
               <div className="p-2 bg-neutral-200 dark:bg-neutral-800 w-[fit-content] border-b border-neutral-600 flex items-center h-full">
                 <span className="text-sm pl-2">
@@ -67,18 +73,20 @@ export default function Editor() {
             <div
               className={clsx(
                 "h-full flex items-center min-h-full w-[fit-content] p-2 px-4 transition duration-300 ease-in-out",
-                isUnbalanced ? "bg-pink-500" : "bg-neutral-300 dark:bg-neutral-800"
+                isUnbalanced
+                  ? "bg-pink-500"
+                  : "bg-neutral-300 dark:bg-neutral-800"
               )}
             >
               <div className="flex items-center justify-between h-full gap-4">
                 <div className="flex items-center gap-2 h-full">
                   <span className="text-sm font-normal">
-                    {formatCurrency(totals.debit || 0) || "0.00"}
+                    {formatCurrency(totals.debit || 0, parser?.metadata?.currency || "USD") || "0.00"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-normal">
-                    {formatCurrency(totals.credit || 0) || "0.00"}
+                    {formatCurrency(totals.credit || 0, parser?.metadata?.currency || "USD") || "0.00"}
                   </span>
                 </div>
               </div>
@@ -96,11 +104,9 @@ export default function Editor() {
               }
             }}
             onDirtyChange={(dirty) => {
-              console.log("Dirty: ", dirty);
               setIsDirty(dirty);
             }}
             onTypingChange={(typing) => {
-              console.log("Typing: ", typing);
               setIsTyping(typing);
             }}
           />
@@ -108,13 +114,20 @@ export default function Editor() {
       </div>
 
       {/* Sidebar derecho con cuentas */}
-      <div className={clsx("w-full max-w-[400px] max-h-[110vh] min-w-[200px] rounded-xl p-4 overflow-hidden", glassMode ? "glass-card" : "bg-neutral-900")}>
+      <div
+        className={clsx(
+          "w-full max-w-[400px] max-h-[110vh] min-w-[200px] rounded-xl p-4 overflow-hidden",
+          glassMode ? "glass-card" : "bg-neutral-900"
+        )}
+      >
         {/* 🔍 Buscador */}
         <div className="mb-4">
           <input
             type="text"
             placeholder="Buscar cuenta..."
-            className={clsx("w-full px-3 py-2 rounded-md bg-white dark:bg-neutral-800 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-purple-500" )}
+            className={clsx(
+              "w-full px-3 py-2 rounded-md bg-white dark:bg-neutral-800 text-sm text-foreground dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            )}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -134,7 +147,7 @@ export default function Editor() {
                   {item.name}
                 </p>
                 <p className="text-sm text-muted-foreground transition-colors">
-                  {item.amount.map((a) => formatCurrency(a)).join(" | ")}
+                  {item.amount.map((a) => formatCurrency(a, parser?.metadata?.currency || "USD")).join(" | ")}
                 </p>
               </div>
             </li>

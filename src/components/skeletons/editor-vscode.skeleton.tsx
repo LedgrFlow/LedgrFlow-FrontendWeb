@@ -1,20 +1,20 @@
 import Editor from "@monaco-editor/react";
 import { useEffect, useRef } from "react";
 import { EDITOR_THEMES as Themes } from "@/themes/index";
-import { linterLedger } from "@/config/editor/linter-ledger";
+import { linterLedger } from "@/lib/editor/linter";
 
 const sampleLedger = `
-;;; [currency]
-;;; MXN, USD, EUR
-
-;;; [Taxes]
-;;; IVA = 16
-;;; RET_ISR = 1.25
-
-;;; [snippet:gasolina]
-;;; $DATE * Gasolina
-;;;     Expenses:Transport  $monto
-;;;     Assets:Cash
+---
+currency: USD
+snippets:
+  dining: Expenses:Food:DiningOut
+  groceries: Expenses:Food:Groceries
+  rent: Expenses:Rent
+  salary: Income:Salary
+taxes:
+  ISR: '0.30'
+  IVA: '0.16'
+---
 
 ; Activos
 account Assets:Bank:Checking

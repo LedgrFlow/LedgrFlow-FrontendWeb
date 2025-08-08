@@ -2,7 +2,7 @@ import Editor, { type OnMount } from "@monaco-editor/react";
 import { evaluate } from "mathjs";
 import { useEffect, useRef, useState } from "react";
 import * as monaco from "monaco-editor";
-import { linterLedger } from "@/config/editor/linter-ledger";
+import { linterLedger } from "@/lib/editor/linter";
 import { EDITOR_THEMES as Themes } from "@/themes/index";
 
 interface EditorViewProps {

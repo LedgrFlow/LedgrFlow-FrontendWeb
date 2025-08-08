@@ -23,6 +23,7 @@ type Props = {
   data: AccountTree;
   style?: "default" | "complete"; // nuevo parámetro
   parents?: Parents | undefined;
+  currency?: string;
 };
 
 export function TableBalanceByDetail({
@@ -35,6 +36,7 @@ export function TableBalanceByDetail({
     Income: "Income",
     Expenses: "Expenses",
   },
+  currency = "USD",
 }: Props) {
   let index = 0;
 
@@ -53,10 +55,9 @@ export function TableBalanceByDetail({
     index++;
 
     rows.push(
-      <TableRow key={`${fullPath.join("-")}-${index}`} 
-      
+      <TableRow
+        key={`${fullPath.join("-")}-${index}`}
         className="transition-colors duration-150 border-neutral-300/10 hover:bg-blue-500/15 dark:hover:bg-muted"
-      
       >
         <TableCell className="text-center">{index}</TableCell>
         <TableCell>
@@ -73,8 +74,15 @@ export function TableBalanceByDetail({
           </div>
         </TableCell>
         <TableCell className="text-right space-y-1 flex items-center gap-4">
-          {Object.entries(node.balances).map(([currency, amount]) => (
-            <div key={currency}>{formatCurrency(amount, currency)}</div>
+          {Object.entries(node.balances).map(([localCurrency, amount]) => (
+            <div key={currency}>
+              {formatCurrency(
+                amount,
+                localCurrency === "$" || localCurrency === "N/A"
+                  ? currency
+                  : localCurrency
+              )}
+            </div>
           ))}
         </TableCell>
       </TableRow>

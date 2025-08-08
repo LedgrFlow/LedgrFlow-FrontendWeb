@@ -11,7 +11,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import clsx from "clsx";
 import { formatCurrency } from "@/utils/format";
 import type { JSX } from "react";
-import { returnBadgeColorByParent, type Parents } from "./styles-dinamics";
+import {
+  returnBadgeColorByParent,
+  type Parents,
+} from "@/views/app/tables/utils/styles";
 
 type AccountData = Record<string, Record<string, number>>;
 type UtilityData = Record<string, number>;

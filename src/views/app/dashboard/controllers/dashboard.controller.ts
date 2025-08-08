@@ -8,7 +8,7 @@ const formatter = new DateFormatter();
 
 export function useDashboard() {
   const { currentFile } = useFiles();
-  const { listMonths, analysis, parser } = useLedger();
+  const { listMonths, analysis, parser , currency} = useLedger();
 
   const [currentMonth, setCurrentMonth] = useState<string>("");
   const [cashflows, setCashflows] = useState<Cashflow | null>(null);
@@ -121,6 +121,7 @@ export function useDashboard() {
     cashflows,
     dailyData,
     balanceByDay,
+    currency,
     selectMonth,
     buildMonths,
     filterCashflowsByMonth,

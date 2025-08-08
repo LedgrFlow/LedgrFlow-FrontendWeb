@@ -13,9 +13,9 @@ export function RegistersNotFileView({
 }: RegistersNotFileViewProps) {
   return (
     <div className="w-full h-full py-5 relative">
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black z-10 flex justify-center items-center">
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-transparent via-neutral-100/50 to-neutral-100/40 dark:via-black/30 dark:to-black/70 z-10 flex justify-center items-center">
         <div className="max-w-lg text-center">
-          <h1 className="text-3xl font-semibold text-white">
+          <h1 className="text-3xl font-semibold text-foreground dark:text-white">
             {title ?? "No has seleccionado ningún archivo"}
           </h1>
           <p className="text-muted-foreground text-sm mt-3">

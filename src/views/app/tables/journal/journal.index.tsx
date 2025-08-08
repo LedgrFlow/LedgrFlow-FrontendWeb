@@ -1,11 +1,11 @@
 import { CardGradient } from "@/components/cards/card-gradient";
-import { TradicionalJournal } from "@/components/tables/table-traditional-journal";
+import { TradicionalJournal } from "./traditional-journal.table";
 import { useLedger } from "@/contexts/LedgerContext";
 import { useMemo } from "react";
 import { RegisterViewBase } from "@/views/app/tables/layouts/register-base";
 
 export default function JournalView() {
-  const { parser, totals } = useLedger();
+  const { parser, totals, currency } = useLedger();
 
   const evaluateTotals = useMemo(
     () =>
@@ -21,6 +21,7 @@ export default function JournalView() {
             <CardGradient
               value={totals?.credit ?? 0}
               isNeutral
+              currency={currency}
               title="Saldo credito"
               percentage={evaluateTotals ? 1 : -1}
               descriptions={["Saldo del último periodo"]}
@@ -30,6 +31,7 @@ export default function JournalView() {
             <CardGradient
               value={totals?.debit ?? 0}
               isNeutral
+              currency={currency}
               percentage={evaluateTotals ? 1 : -1}
               descriptions={[
                 "Saldo del último periodo",
@@ -42,6 +44,7 @@ export default function JournalView() {
             <CardGradient
               value={parser?.transactions.length ?? 0}
               isNeutral
+              currency={currency}
               useStyleNeutral
               title="Transacciones"
               percentage={1}
@@ -52,10 +55,7 @@ export default function JournalView() {
         </div>
 
         <div className="w-full  m-auto">
-          <TradicionalJournal
-            data={parser?.transactions_resolved ?? parser?.transactions ?? []}
-            parentsAccounts={parser?.parents}
-          />
+          <TradicionalJournal />
         </div>
       </div>
     </RegisterViewBase>

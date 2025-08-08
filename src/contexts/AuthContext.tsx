@@ -6,6 +6,7 @@ import { BackendSettings } from "@/services/backend/backSettings";
 import type { UserSettingsData } from "@/types/backend/settings-back.types";
 import { BackendActivity } from "@/services/backend/backActivity";
 import type { UserActivity } from "@/types/backend/user-activity.types";
+import { useAppToast } from "@/lib/notify";
 
 interface User {
   id: string;
@@ -172,22 +173,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (!temporalSettings) return;
 
     setIsLoagindUploadSettings(true);
-    BackendSettings.update(temporalSettings)
-      .then(() => {
-        BackendSettings.get().then((res) => {
-          if (res) {
-            getUserSettings();
-            BackendActivity.createActivity({
-              event: "settings_update",
-            });
-          }
-        });
-        setIsLoagindUploadSettings(false);
-      })
-      .catch((error) => {
-        console.error("Error updating settings:", error);
-        setIsLoagindUploadSettings(false);
-      });
+    useAppToast.notifyPromise(
+      BackendSettings.update(temporalSettings)
+        .then(() => {
+          BackendSettings.get().then((res) => {
+            if (res) {
+              getUserSettings();
+              BackendActivity.createActivity({
+                event: "settings_update",
+              });
+            }
+          });
+          setIsLoagindUploadSettings(false);
+        })
+        .catch((error) => {
+          console.error("Error updating settings:", error);
+          setIsLoagindUploadSettings(false);
+        }),
+      {
+        loading: "Guardando configuración",
+        success: "Configuración guardada",
+        error: "Error al guardar la configuración",
+      }
+    );
   };
 
   const updateUser = () => {

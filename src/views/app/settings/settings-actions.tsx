@@ -8,11 +8,14 @@ import { useUI } from "@/contexts/UIContext";
 export function SettingsActionsButton() {
   const { glassMode } = useUI();
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { updateSettings, updateUser, user } = useAuth();
 
-  const handleSaveSettings = () => {
-    updateSettings();
-    updateUser();
+  const handleSaveSettings = async () => {
+    setLoading(true);
+    await updateSettings();
+    await updateUser();
+    setLoading(false);
   };
 
   return (
@@ -35,8 +38,9 @@ export function SettingsActionsButton() {
 
           <button
             // disabled={isLoadingUploadSettings}
+            disabled={loading}
             onClick={() => handleSaveSettings()}
-            className="transition-all duration-300 w-[fit-content] text-white px-4 py-1 rounded-md text-md bg-black dark:bg-neutral-500/30 border-2 border-white-500/70 flex items-center gap-2 hover:bg-neutral-500/50"
+            className="transition-all duration-300 w-[fit-content] text-white px-4 py-1 rounded-md text-md bg-black dark:bg-neutral-500/30 border-2 border-white-500/70 flex items-center gap-2 cursor-pointer hover:bg-black dark:hover:bg-neutral-500/50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg--neutral-500"
           >
             <Save className="w-4 h-4 text-white-400" />
             Guardar configuraciones
@@ -56,7 +60,7 @@ export function SettingsActionsButton() {
 
           <button
             onClick={() => setShowModal(true)}
-            className="transition-all duration-300 w-[fit-content] text-white px-4 py-1 rounded-md text-md bg-red-500/30 border-2 border-red-500/70 flex items-center gap-2 hover:bg-red-500/50"
+            className="transition-all duration-300 w-[fit-content] text-white px-4 py-1 rounded-md text-md bg-red-500/30 border-2 border-red-500/70 flex items-center gap-2 hover:bg-red-500/50 cursor-pointer"
           >
             <Trash className="w-4 h-4 text-red-400" />
             Eliminar cuenta

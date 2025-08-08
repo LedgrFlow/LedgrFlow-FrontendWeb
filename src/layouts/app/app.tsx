@@ -271,7 +271,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <main className="w-full max-w-[1600px] m-auto min-h-screen rounded-2xl mt-4 overflow-hidden">
+        <main className="w-full max-w-[1600px] m-auto min-h-screen rounded-2xl mt-4 overflow-hidden relative">
           {children}
         </main>
       </div>

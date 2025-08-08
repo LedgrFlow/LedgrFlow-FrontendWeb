@@ -32,6 +32,8 @@ interface LedgerContextProps {
   isErrorAnalysis: boolean;
   /** Is the parser data loading */
   isErrorParser: boolean;
+  /** Currency of the ledger file */
+  currency: string;
 }
 
 /**
@@ -87,6 +89,7 @@ export const LedgerProvider: React.FC<LedgerProviderProps> = ({ children }) => {
   const [isLoadingParser, setIsLoadingParser] = useState(false);
   const [isErrorAnalysis, setIsErrorAnalysis] = useState(false);
   const [isErrorParser, setIsErrorParser] = useState(false);
+  const [currency, setCurrency] = useState<string>("USD");
   const [totals, setTotals] = useState<{ debit: number; credit: number }>({
     debit: 0,
     credit: 0,
@@ -181,6 +184,7 @@ export const LedgerProvider: React.FC<LedgerProviderProps> = ({ children }) => {
     if (parser) {
       const { debit, credit } = getTotalDebitsAndCredits(parser.transactions_resolved ?? parser.transactions ?? []);
       setTotals({ debit, credit });
+      setCurrency(parser.metadata?.currency || "USD");
     } else {
       setTotals({ debit: 0, credit: 0 });
     }
@@ -212,6 +216,7 @@ export const LedgerProvider: React.FC<LedgerProviderProps> = ({ children }) => {
     isLoadingParser,
     isErrorAnalysis,
     isErrorParser,
+    currency,
   };
 
   return (

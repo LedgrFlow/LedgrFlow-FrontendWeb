@@ -25,6 +25,8 @@ export interface ChartAreaGradientProps {
   xKey: string;
   title?: string;
   description?: string;
+  descriptions?: string[];
+  percentage?: number;
   footerText?: string;
 }
 
@@ -35,7 +37,16 @@ export function ChartAreaGradient({
   title = "Area Chart - Gradient",
   description = "Showing data overview",
   footerText = "January - June 2024",
+  descriptions = [],
+  percentage = 0,
 }: ChartAreaGradientProps) {
+  const newDescription =
+    percentage > 0
+      ? descriptions[0]
+      : percentage < 0
+      ? descriptions[1]
+      : descriptions[2];
+
   return (
     <Card>
       <CardHeader>
@@ -93,7 +104,7 @@ export function ChartAreaGradient({
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+              {newDescription}
             </div>
             <div className="text-muted-foreground flex items-center gap-2 leading-none">
               {footerText}

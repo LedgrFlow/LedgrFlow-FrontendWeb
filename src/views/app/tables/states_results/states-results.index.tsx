@@ -1,12 +1,13 @@
 import { CardGradient } from "@/components/cards/card-gradient";
-import { IncomeStatement } from "@/components/tables/table-state-results";
+// import { IncomeStatement } from "@/components/tables/table-state-results";
 import { useLedger } from "@/contexts/LedgerContext";
 import { formatCurrency } from "@/utils/format";
 import { useMemo } from "react";
 import { RegisterViewBase } from "../layouts/register-base";
+import { IncomeStatementTable } from "./incomeStatement.table";
 
 export default function StatesResultsView() {
-  const { parser } = useLedger();
+  const { parser, currency } = useLedger();
 
   const getNewStates = useMemo(() => {
     if (parser?.state_results) {
@@ -31,6 +32,11 @@ export default function StatesResultsView() {
                 <CardGradient
                   key={i}
                   isNeutral
+                  currency={
+                    item.unit == "$" || item.unit === "N/A"
+                      ? currency
+                      : item.unit
+                  }
                   value={item.amount}
                   title={"Resultado del Ejercicio"}
                   percentage={item.amount}
@@ -56,13 +62,7 @@ export default function StatesResultsView() {
         </div>
 
         <div className="w-full  m-auto">
-          <IncomeStatement
-            expenses_details={parser?.state_results?.expenses_details ?? []}
-            income_details={parser?.state_results?.income_details ?? []}
-            utility_by_currency={
-              parser?.state_results?.utility_by_currency ?? {}
-            }
-          />
+          <IncomeStatementTable />
         </div>
       </div>
     </RegisterViewBase>
