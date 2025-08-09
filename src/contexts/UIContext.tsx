@@ -63,7 +63,7 @@ export const UIProvider: React.FC<ProviderProps> = ({ children }) => {
   }, [theme]);
 
   useEffect(() => {
-    setTheme(settings?.app_theme || "light");
+    selectTheme(settings?.app_theme || "light");
     setGlassMode(settings?.app_glass_mode || false);
   }, [settings]);
 
@@ -73,6 +73,7 @@ export const UIProvider: React.FC<ProviderProps> = ({ children }) => {
     useEffect(() => {
       console.groupCollapsed("📦 UIContext Debug");
       console.log("THEME:", theme);
+      console.log("GLASS MODE:", glassMode);
       console.groupEnd();
     }, [theme]);
   }
