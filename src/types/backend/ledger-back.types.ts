@@ -191,11 +191,26 @@ export interface LedgerParserData {
     Equity: string;
     Income: string;
     Expenses: string;
-  }
+  };
   transactions_resolved: Transaction[];
+  ledger_document: Block[];
 }
 
 export interface ResponseLedgerParser {
   data: LedgerParserData;
   success: boolean;
 }
+
+export type Block = LineBlock | TransactionBlock;
+
+export type LineBlock = {
+  index: number;
+  line: string;
+  type: "line";
+};
+
+export type TransactionBlock = {
+  index: number[]; // puede ser varios índices
+  lines: string[];
+  type: "transaction";
+};

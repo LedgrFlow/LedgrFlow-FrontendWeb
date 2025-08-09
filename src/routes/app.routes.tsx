@@ -10,6 +10,7 @@ import BalanceView from "@/views/app/tables/balance/balance.index";
 import BalanceDetailView from "@/views/app/tables/balance_details/balance-detail.index";
 import SettingsView from "@/views/app/settings/settings.index";
 import HelpsView from "@/views/app/helps/help.index";
+import NotesView from "@/views/app/notes/notes.index";
 import { RoutesConfig } from "@/config/routes.config";
 const { rootPaths } = RoutesConfig;
 
@@ -41,7 +42,8 @@ export const AppRoutes = [
         element={<BalanceDetailView />}
       />
     </Route>
-    <Route path={rootPaths.index.profile.href} element={<ProfileView />} />
+    <Route path={rootPaths.index.profile.href} element={<ProfileView />} />,
+    <Route path={"/test-editor"} element={<NotesView />} />,
   </Route>,
 
   <Route

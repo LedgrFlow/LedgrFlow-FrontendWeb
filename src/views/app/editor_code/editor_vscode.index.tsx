@@ -31,7 +31,6 @@ export default function Editor() {
   } = useEditorMonaco();
 
   const downloadLink = useMemo(() => {
-    console.log(contentFile)
     if (currentFile) {
       return DownloadLinks.fromString(
         currentContent,
