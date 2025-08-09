@@ -8,6 +8,7 @@ interface ProviderProps {
 
 interface UIContextType {
   selectTheme: (theme: string) => void;
+  selectedGlassMode: (glass: boolean) => void;
   glassMode: boolean;
   theme: string | undefined;
 }
@@ -50,6 +51,11 @@ export const UIProvider: React.FC<ProviderProps> = ({ children }) => {
     setTheme(selectedTheme);
   }
 
+  function selectedGlassMode(glass: boolean) {
+    localStorage.setItem("glass", glass.toString());
+    setGlassMode(glass);
+  }
+
   useEffect(() => {
     const classTheme = document.documentElement.classList.toString();
     if (classTheme) document.documentElement.classList.remove(classTheme);
@@ -58,6 +64,7 @@ export const UIProvider: React.FC<ProviderProps> = ({ children }) => {
 
   useEffect(() => {
     setTheme(settings?.app_theme || "light");
+    setGlassMode(settings?.app_glass_mode || false);
   }, [settings]);
 
   // DEBUG
@@ -74,6 +81,7 @@ export const UIProvider: React.FC<ProviderProps> = ({ children }) => {
 
   const value: UIContextType = {
     selectTheme,
+    selectedGlassMode,
     glassMode,
     theme,
   };

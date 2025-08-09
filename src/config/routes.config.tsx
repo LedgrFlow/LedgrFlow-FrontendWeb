@@ -75,12 +75,12 @@ const rootPaths = {
   },
   general: {
     Settings: {
-      label: "Settings",
+      label: "Configuración",
       href: "/settings",
       icon: <Settings className={size_icons} />,
     },
     Help: {
-      label: "Help",
+      label: "Ayuda",
       href: "/help",
       icon: <HelpCircle className={size_icons} />,
     },
@@ -88,17 +88,17 @@ const rootPaths = {
 
   auth: {
     login: {
-      label: "Login",
+      label: "Iniciar sesión",
       href: "/login",
       icon: <LogIn className={size_icons} />,
     },
     register: {
-      label: "Register",
+      label: "Tablas",
       href: "/register",
       icon: <UserPlus className={size_icons} />,
     },
     logout: {
-      label: "Logout",
+      label: "Cerrar sesión",
       href: "/logout",
       icon: <LogOut className={size_icons} />,
     },
@@ -106,7 +106,7 @@ const rootPaths = {
 
   index: {
     profile: {
-      label: "Profile",
+      label: "Perfil",
       href: "/profile",
       icon: <User className={size_icons} />,
     },

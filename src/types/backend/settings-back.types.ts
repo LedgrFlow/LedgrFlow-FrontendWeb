@@ -1,6 +1,7 @@
 export type UserSettingsData = {
   allow_account_aliases: boolean;
   app_theme: "light" | "dark" | "system"; // puedes ajustar si hay más opciones
+  app_glass_mode: boolean;
   auto_format_on_save: boolean;
   auto_save_file: boolean;
   decimal_separator: "," | "."; // puedes agregar más si es necesario

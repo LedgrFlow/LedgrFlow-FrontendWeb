@@ -4,25 +4,33 @@ import { useMemo } from "react";
 import { Toaster } from "react-hot-toast";
 
 export function BaseLayout({ children }: { children: React.ReactNode }) {
-  const { theme } = useUI();
+  const { theme, glassMode } = useUI();
   const styles = useMemo(() => {
     console.log(theme);
 
-    if (theme === "dark")
+    if (glassMode && theme === "dark")
       return {
         backgroundColor: "hsla(0,1%,3%,1)",
         backgroundImage: `radial-gradient(at 1% 96%, hsla(287,81%,75%,0.31) 0px, transparent 50%),
 radial-gradient(at 35% 2%, hsla(61,100%,71%,0.31) 0px, transparent 50%),
 radial-gradient(at 77% 88%, hsla(217,65%,67%,0.42) 0px, transparent 50%)`,
       };
-
-    return {
-      backgroundColor: `hsla(0,0%,100%,1)`,
-      backgroundImage: `radial-gradient(at 1% 96%, hsla(287,81%,75%,0.63) 0px, transparent 50%),
+    else if (glassMode && theme === "light")
+      return {
+        backgroundColor: `hsla(0,0%,100%,1)`,
+        backgroundImage: `radial-gradient(at 1% 96%, hsla(287,81%,75%,0.63) 0px, transparent 50%),
 radial-gradient(at 35% 2%, hsla(61,100%,71%,0.31) 0px, transparent 50%),
 radial-gradient(at 77% 88%, hsla(217,65%,67%,0.78) 0px, transparent 50%)`,
-    };
-  }, [theme]);
+      };
+    else if (theme === "dark")
+      return {
+        backgroundColor: "#000",
+      };
+    else if (theme === "light")
+      return {
+        backgroundColor: "#fff",
+      };
+  }, [glassMode, theme]);
 
   return (
     <div className="w-full h-full min-h-screen relative" style={styles}>

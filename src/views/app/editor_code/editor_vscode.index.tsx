@@ -37,7 +37,7 @@ export default function Editor() {
           <div
             className={clsx(
               "w-full overflow-hidden mb-3 flex justify-between",
-              glassMode ? "glass-card" : "bg-neutral-900"
+              glassMode ? "glass-card" : "bg-neutral-100 dark:bg-neutral-900"
             )}
           >
             <div className="flex items-center">
@@ -117,7 +117,7 @@ export default function Editor() {
       <div
         className={clsx(
           "w-full max-w-[400px] max-h-[110vh] min-w-[200px] rounded-xl p-4 overflow-hidden",
-          glassMode ? "glass-card" : "bg-neutral-900"
+          glassMode ? "glass-card" : "bg-neutral-100 dark:bg-neutral-900"
         )}
       >
         {/* 🔍 Buscador */}

@@ -123,7 +123,7 @@ export default function Helps() {
           ¿Tienes sugerencias o deseas contribuir al desarrollo?
         </p>
         <a
-          href="https://github.com/tuusuario/tu-proyecto"
+          href="https://github.com/LedgrFlow"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -78,7 +78,7 @@ export function SettingsEditorSection() {
     >
       <div className="w-full h-full max-w-xl flex flex-col gap-5 min-h-[700px]">
         <div className="w-full flex items-center gap-3">
-          <Code className="w-10 h-10 text-white/60" />
+          <Code className="w-10 h-10 text-black/60 dark:text-white/60" />
           <div>
             <h1 className="max-w-lg text-xl font-semibold leading-loose text-gray-900 dark:text-neutral-100/80">
               Editor

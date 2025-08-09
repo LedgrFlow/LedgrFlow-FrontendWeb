@@ -179,7 +179,7 @@ export function BalanceGeneral({
       utilidadRows.push(
         <TableRow
           key={`utility-${currency}`}
-          className="bg-blue-600/40 dark:bg-background/40 border-none hover:bg-blue-500/15 dark:hover:bg-muted"
+          className="bg-blue-200/40 dark:bg-background/40 border-none hover:bg-blue-500/15 dark:hover:bg-muted"
         >
           <TableCell className="w-[fit-content] text-center">{index}</TableCell>
           <TableCell>

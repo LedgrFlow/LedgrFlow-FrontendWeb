@@ -15,8 +15,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useUI } from "@/contexts/UIContext";
 import clsx from "clsx";
 
-// https://api.dicebear.com/6.x/bottts-neutral/svg?seed=Eduardo"
-
 export function SettingsAccountSection() {
   const { glassMode } = useUI();
   const { user, updateTemporalUser } = useAuth();
@@ -59,7 +57,7 @@ export function SettingsAccountSection() {
       <div className="w-full h-full flex flex-col gap-5 rounded-xl flex-1">
         <div className="w-full flex flex-col gap-5 max-w-xl">
           <div className="w-full flex items-center gap-3">
-            <UserIcon className="w-10 h-10 text-white/60" />
+            <UserIcon className="w-10 h-10 text-black/60 dark:text-white/60" />
             <div>
               <h1 className="max-w-lg text-xl font-semibold leading-loose text-gray-900 dark:text-neutral-100/80">
                 Cuenta

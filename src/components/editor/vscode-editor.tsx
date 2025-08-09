@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import * as monaco from "monaco-editor";
 import { linterLedger } from "@/lib/editor/linter";
 import { EDITOR_THEMES as Themes } from "@/themes/index";
+import { validateLedger } from "@/lib/editor/rules";
 
 interface EditorViewProps {
   defaultValue?: string;
@@ -14,6 +15,25 @@ interface EditorViewProps {
   onDirtyChange?: (dirty: boolean) => void;
   theme?: string;
 }
+
+const markers: monaco.editor.IMarkerData[] = [
+  {
+    severity: monaco.MarkerSeverity.Error, // Error | Warning | Info | Hint
+    message: "Mensaje descriptivo del problema",
+    startLineNumber: 1,
+    startColumn: 1,
+    endLineNumber: 1,
+    endColumn: 10,
+  },
+  {
+    severity: monaco.MarkerSeverity.Warning,
+    message: "Esto es una advertencia",
+    startLineNumber: 3,
+    startColumn: 5,
+    endLineNumber: 3,
+    endColumn: 15,
+  },
+];
 
 let isLedgerCompletionRegistered = false;
 
@@ -108,6 +128,12 @@ export function EditorView({
     if (!isLedgerCompletionRegistered) {
       monaco.languages.register({ id: "ledger" });
       monaco.languages.setMonarchTokensProvider("ledger", linterLedger);
+
+      const model = editor.getModel();
+      if (model && model.getLanguageId() === "ledger") {
+        model.onDidChangeContent(() => validateLedger(model));
+        validateLedger(model); // validar al abrir
+      }
 
       monaco.languages.registerCompletionItemProvider("ledger", {
         triggerCharacters: ["*", "+", "-", "/", "(", ")", "$", "=", " ", "\t"],

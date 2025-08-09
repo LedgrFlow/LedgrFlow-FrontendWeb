@@ -13,6 +13,9 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { FileItem } from "@/types/backend/files-back.types";
+import { RoutesConfig } from "@/config/routes.config";
+import { Link } from "react-router-dom";
+const { rootPaths } = RoutesConfig;
 
 interface SearchFilesProps {
   onChange?: (value: string) => void;
@@ -77,21 +80,20 @@ export function SearchFiles({ onChange, files, onSelect }: SearchFilesProps) {
               </CommandGroup>
               <CommandSeparator />
               <CommandGroup heading="Settings">
-                <CommandItem>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                  <CommandShortcut>⌘P</CommandShortcut>
-                </CommandItem>
-                <CommandItem>
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  <span>Billing</span>
-                  <CommandShortcut>⌘B</CommandShortcut>
-                </CommandItem>
-                <CommandItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                  <CommandShortcut>⌘S</CommandShortcut>
-                </CommandItem>
+                <Link to={rootPaths?.index.profile.href}>
+                  <CommandItem>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>{rootPaths?.index.profile.label}</span>
+                    <CommandShortcut>⌘P</CommandShortcut>
+                  </CommandItem>
+                </Link>
+                <Link to={rootPaths?.general.Settings.href}>
+                  <CommandItem>
+                    {rootPaths?.general.Settings.icon}
+                    <span>{rootPaths?.general.Settings.label}</span>
+                    <CommandShortcut>⌘P</CommandShortcut>
+                  </CommandItem>
+                </Link>
               </CommandGroup>
             </>
           )}

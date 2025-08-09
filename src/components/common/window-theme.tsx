@@ -26,7 +26,7 @@ function WindowThemeSystem({ size = 500 }: WindowThemeProps) {
 
 interface WindowThemeProps {
   size?: number;
-  theme?: `light` | `dark` | `system`;
+  theme?: `light` | `dark` | `system` | `glass`;
 }
 
 function Window({ size = 500, theme = "light" }: WindowThemeProps) {
@@ -131,6 +131,119 @@ function Window({ size = 500, theme = "light" }: WindowThemeProps) {
   );
 }
 
+function WindowGlass({ size = 500, theme = "light" }: WindowThemeProps) {
+  const sidebarWidth = size * 0.15;
+  const contentPadding = size * 0.03;
+  const headerHeight = size * 0.06;
+  const boxHeight = size * 0.1;
+  const fullBoxHeight = size * 0.16;
+  const halfBoxHeight = size * 0.2;
+  const borderRadius = Math.max(size * 0.03, 4); // asegura que no sea menor de 4px
+  const gap = Math.max(size * 0.025, 4); // mínimo 4px
+  const margin = Math.max(size * 0.025, 4); // similar al gap, mínimo 4px
+
+  const background = theme === "dark" ? "glass-card" : "glass-card";
+  const components = theme === "dark" ? "glass-card" : "glass-card";
+
+  return (
+    <div
+      className=" overflow-hidden bg-gradient-to-br from-white/70 to-blue-300 dark:from-blue-900/70 dark:to-blue-950/70"
+      style={{
+        height: size,
+        width: size,
+        minHeight: size,
+        minWidth: size,
+        borderRadius,
+      }}
+    >
+      <div
+        style={{
+          width: size,
+          height: size,
+          minHeight: size,
+          minWidth: size,
+          borderRadius,
+        }}
+        className={clsx("flex overflow-hidden", background)}
+      >
+        <div
+          style={{
+            width: sidebarWidth,
+            height: size,
+          }}
+          className={clsx(components)}
+        ></div>
+
+        <div
+          style={{
+            padding: contentPadding,
+            height: size,
+            gap: gap + 1,
+          }}
+          className="flex-1 flex flex-col"
+        >
+          <div
+            style={{
+              height: headerHeight,
+              borderRadius,
+            }}
+            className={clsx("w-full", components)}
+          ></div>
+
+          <div
+            style={{
+              flex: 1,
+              padding: contentPadding,
+              borderRadius,
+            }}
+            className={clsx("w-full flex flex-col", components)}
+          >
+            <div
+              style={{
+                gap: gap,
+                marginBottom: margin,
+              }}
+              className="flex"
+            >
+              {[...Array(3)].map((_, i) => (
+                <div
+                  key={i}
+                  style={{ height: boxHeight, borderRadius }}
+                  className={clsx("w-full", background)}
+                ></div>
+              ))}
+            </div>
+
+            <div
+              style={{
+                height: fullBoxHeight,
+                borderRadius,
+                marginBottom: margin,
+              }}
+              className={clsx("w-full", background)}
+            ></div>
+
+            <div
+              style={{
+                gap: gap,
+              }}
+              className="flex flex-1 h-full"
+            >
+              {[...Array(2)].map((_, i) => (
+                <div
+                  key={i}
+                  style={{ borderRadius }}
+                  className={clsx("w-full h-full", background)}
+                ></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function WindowTheme({
   label = "",
   size = 500,
@@ -140,9 +253,9 @@ export function WindowTheme({
 }: {
   label?: string;
   size?: number;
-  theme?: `light` | `dark` | `system`;
+  theme?: `light` | `dark` | `system` | `glass`;
   isSelected?: boolean;
-  onSelected?: (theme: `light` | `dark` | `system`) => void;
+  onSelected?: (theme: `light` | `dark` | `system` | `glass`) => void;
 }) {
   const borderRadius = Math.max(size * 0.03, 4) + 2; // asegura que no sea menor de 4px
 
@@ -163,6 +276,8 @@ export function WindowTheme({
         <div>
           {theme === "system" ? (
             <WindowThemeSystem size={size} />
+          ) : theme === "glass" ? (
+            <WindowGlass size={size} theme={theme} />
           ) : (
             <Window size={size} theme={theme} />
           )}
