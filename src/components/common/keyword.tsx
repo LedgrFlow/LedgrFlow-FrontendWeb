@@ -1,5 +1,3 @@
-import { Keyboard } from "lucide-react";
-
 export function ShortcutCtrlS() {
   return (
     <div className="flex items-center gap-1 text-sm text-muted-foreground">

@@ -1,5 +1,5 @@
 import { TrendingDown, TrendingUp } from "lucide-react";
-import { Pie, PieChart, Sector } from "recharts";
+import { Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -12,12 +12,9 @@ import {
 import type { ChartConfig } from "@/components/ui/chart";
 import {
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import type { PieSectorDataItem } from "recharts/types/polar/Pie";
 
 export const description = "A pie chart with a label";
 
@@ -100,7 +97,6 @@ export function ChartPieLabel({
         >
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-         
 
             <Pie
               data={data}

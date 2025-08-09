@@ -65,7 +65,9 @@ export class FileStorage {
       if (!expired) {
         all.push(record.file);
       } else {
-        await cursor?.delete(); // eliminar expirado
+        const cursor = await db.transaction(STORE).store.openCursor();
+        cursor;
+        await cursor.continue();
       }
     }
 

@@ -1,69 +1,108 @@
-# React + TypeScript + Vite
+# LedgrFlow (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Interfaz moderna para la contabilidad en texto plano — construida con React, TypeScript y ViteJS.**
 
-Currently, two official plugins are available:
+Este es el cliente web oficial de [LedgrFlow](../README.md), diseñado para ofrecer una experiencia visual, ágil y potente para trabajar con archivos Ledger. Combina la precisión contable con un diseño limpio y herramientas interactivas para simplificar el trabajo diario.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🖥️ Tecnologías utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React 18** — Biblioteca para construir interfaces de usuario.
+- **TypeScript** — Tipado estático para mayor robustez y mantenibilidad.
+- **ViteJS** — Bundler ultrarrápido para desarrollo y producción.
+- **Tailwind CSS** — Estilado moderno y eficiente.
+- **ShadCN/UI** — Componentes reutilizables y accesibles.
+<!-- - **SWR** — Manejo de estado de datos remoto. -->
+<!-- - **Lightweight Charts** — Gráficos financieros interactivos. -->
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## 🚀 Características del frontend
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Editor contable con autocompletado y validación visual.
+- Dashboard dinámico con gráficos y reportes.
+- Navegación rápida y carga instantánea gracias a Vite.
+- Integración con el backend de LedgrFlow vía API.
+<!-- - Diseño responsive y accesible. -->
+
+---
+
+## 📦 Requisitos previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+- [Node.js](https://nodejs.org/) v18 o superior
+- npm (incluido con Node.js)
+- Backend de **LedgrFlow** corriendo (puedes levantarlo con Docker o localmente).
+
+---
+
+## 🛠️ Instalación y ejecución
+
+Clona el repositorio e instala las dependencias:
+
+```bash
+git clone https://github.com/tuusuario/ledgrflow.git
+cd ledgrflow/frontend
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Crea el archivo `.env` en la carpeta `frontend` con la URL del backend:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_URL=http://localhost:3000
 ```
+
+Inicia el entorno de desarrollo:
+
+```bash
+npm run dev
+```
+
+El proyecto estará disponible en:
+➡️ **[http://localhost:5173](http://localhost:5173)**
+
+---
+
+## 🏗️ Scripts disponibles
+
+```bash
+npm run dev       # Inicia el servidor de desarrollo
+npm run build     # Compila el proyecto para producción
+npm run preview   # Previsualiza el build de producción
+npm run lint      # Analiza y corrige errores de estilo y sintaxis
+```
+
+---
+
+## 🤝 Contribuir
+
+1. Haz un fork del repositorio.
+2. Crea una rama para tu mejora:
+
+   ```bash
+   git checkout -b mi-nueva-funcionalidad
+   ```
+
+3. Haz commit de tus cambios:
+
+   ```bash
+   git commit -m "Agregada nueva funcionalidad"
+   ```
+
+4. Sube tu rama:
+
+   ```bash
+   git push origin mi-nueva-funcionalidad
+   ```
+
+5. Abre un Pull Request.
+
+---
+
+## 🧑‍💻 Autor
+
+Desarrollado por [@EddyBel](https://github.com/EddyBel) — Contador en formación y amante del texto plano.
+
+-

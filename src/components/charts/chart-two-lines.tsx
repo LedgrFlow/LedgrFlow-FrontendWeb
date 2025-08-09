@@ -22,7 +22,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import dayjs from "dayjs";
-import type { title } from "process";
 import type { DailyInOut } from "@/types/backend/ledger-back.types";
 
 export const description = "A multiple line chart";

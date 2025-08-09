@@ -35,7 +35,7 @@ function Window({ size = 500, theme = "light" }: WindowThemeProps) {
   const headerHeight = size * 0.06;
   const boxHeight = size * 0.1;
   const fullBoxHeight = size * 0.16;
-  const halfBoxHeight = size * 0.2;
+  // const halfBoxHeight = size * 0.2;
   const borderRadius = Math.max(size * 0.03, 4); // asegura que no sea menor de 4px
   const gap = Math.max(size * 0.025, 4); // mínimo 4px
   const margin = Math.max(size * 0.025, 4); // similar al gap, mínimo 4px
@@ -137,7 +137,7 @@ function WindowGlass({ size = 500, theme = "light" }: WindowThemeProps) {
   const headerHeight = size * 0.06;
   const boxHeight = size * 0.1;
   const fullBoxHeight = size * 0.16;
-  const halfBoxHeight = size * 0.2;
+  // const halfBoxHeight = size * 0.2;
   const borderRadius = Math.max(size * 0.03, 4); // asegura que no sea menor de 4px
   const gap = Math.max(size * 0.025, 4); // mínimo 4px
   const margin = Math.max(size * 0.025, 4); // similar al gap, mínimo 4px
@@ -248,7 +248,7 @@ export function WindowTheme({
   label = "",
   size = 500,
   theme = "light",
-  onSelected = (string: string) => {},
+  onSelected = () => {},
   isSelected = false,
 }: {
   label?: string;
@@ -271,7 +271,7 @@ export function WindowTheme({
         style={{
           borderRadius,
         }}
-        onClick={(e) => onSelected(theme)}
+        onClick={() => onSelected(theme)}
       >
         <div>
           {theme === "system" ? (
