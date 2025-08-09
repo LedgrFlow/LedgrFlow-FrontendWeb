@@ -4,6 +4,10 @@ import clsx from "clsx";
 import { ShortcutCtrlS } from "@/components/common/keyword";
 import { useEditorMonaco } from "./controllers/editor_monaco.controller";
 import { useUI } from "@/contexts/UIContext";
+import { Button } from "@/components/ui/button";
+import { DownloadIcon } from "lucide-react";
+import DownloadLinks from "@/lib/files-download";
+import { useMemo } from "react";
 
 export default function Editor() {
   const { glassMode } = useUI();
@@ -25,6 +29,17 @@ export default function Editor() {
     setCurrentContent,
     parser,
   } = useEditorMonaco();
+
+  const downloadLink = useMemo(() => {
+    console.log(contentFile)
+    if (currentFile) {
+      return DownloadLinks.fromString(
+        currentContent,
+        currentFile.name,
+        currentFile.file_extension as "ledger" | "txt"
+      );
+    }
+  }, [currentContent]);
 
   return (
     <div className="w-full h-full min-h-screen space-y-4 flex justify-between gap-2 overflow-hidden">
@@ -81,12 +96,18 @@ export default function Editor() {
               <div className="flex items-center justify-between h-full gap-4">
                 <div className="flex items-center gap-2 h-full">
                   <span className="text-sm font-normal">
-                    {formatCurrency(totals.debit || 0, parser?.metadata?.currency || "USD") || "0.00"}
+                    {formatCurrency(
+                      totals.debit || 0,
+                      parser?.metadata?.currency || "USD"
+                    ) || "0.00"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-normal">
-                    {formatCurrency(totals.credit || 0, parser?.metadata?.currency || "USD") || "0.00"}
+                    {formatCurrency(
+                      totals.credit || 0,
+                      parser?.metadata?.currency || "USD"
+                    ) || "0.00"}
                   </span>
                 </div>
               </div>
@@ -120,6 +141,17 @@ export default function Editor() {
           glassMode ? "glass-card" : "bg-neutral-100 dark:bg-neutral-900"
         )}
       >
+        <a
+          href={downloadLink?.url}
+          download={downloadLink?.filename}
+          target="_blank"
+        >
+          <Button className="w-full mb-5 flex items-center gap-3 justify-center">
+            <DownloadIcon className="w-5 h-5" />
+            Descargar
+          </Button>
+        </a>
+
         {/* 🔍 Buscador */}
         <div className="mb-4">
           <input
@@ -147,7 +179,11 @@ export default function Editor() {
                   {item.name}
                 </p>
                 <p className="text-sm text-muted-foreground transition-colors">
-                  {item.amount.map((a) => formatCurrency(a, parser?.metadata?.currency || "USD")).join(" | ")}
+                  {item.amount
+                    .map((a) =>
+                      formatCurrency(a, parser?.metadata?.currency || "USD")
+                    )
+                    .join(" | ")}
                 </p>
               </div>
             </li>

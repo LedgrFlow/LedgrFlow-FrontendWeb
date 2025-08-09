@@ -9,11 +9,11 @@ export const linterLedger: monaco.languages.IMonarchLanguage = {
 
       // Soporte para listas tipo "- key: value"
       [
-        /^\s*(-)([a-zA-Z_][\w\-]*):/,
+        /^(\s*)(-)([a-zA-Z_][\w\-]*):/,
         [
-          "white", // espacios
-          "delimiter", // el guion "-"
-          "attribute.name", // la clave "tags"
+          "white", // espacios capturados
+          "delimiter", // guion "-"
+          "attribute.name", // clave
         ],
       ],
 
