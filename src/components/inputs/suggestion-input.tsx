@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, type RefObject } from "react";
 import { Input } from "@/components/ui/input";
 
-interface SuggestionItem {
+export interface SuggestionItem {
   value: string;
   label: string;
   icon?: React.ReactNode;
@@ -10,7 +10,11 @@ interface SuggestionItem {
 interface SuggestionInputProps {
   placeholder?: string;
   suggestions: SuggestionItem[];
-  onSelect?: (item: SuggestionItem) => void;
+  // ahora puede recibir null cuando no hay selección asociada
+  onSelect?: (item: SuggestionItem | null) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  ref?: RefObject<HTMLInputElement>;
+  /** Este `value` representa el `value` de la suggestion (no el label visible) */
   value?: string;
   label?: string;
 }
@@ -19,20 +23,34 @@ export function SuggestionInput({
   placeholder = "Search...",
   suggestions,
   onSelect,
+  onKeyDown,
+  ref,
   value: controlledValue,
   label,
 }: SuggestionInputProps) {
-  const [inputValue, setInputValue] = useState(controlledValue ?? "");
-  const [open, setOpen] = useState(false);
-  const [filtered, setFiltered] = useState<SuggestionItem[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Soporte controlado/ no controlado
+  // Si el parent pasa `value` (que es un suggestion.value), buscamos la suggestion asociada:
+  const findByValue = (v?: string) =>
+    v ? suggestions.find((s) => s.value === v) ?? null : null;
+
+  const initialSelected = findByValue(controlledValue);
+  const [selected, setSelected] = useState<SuggestionItem | null>(
+    initialSelected
+  );
+  const [inputValue, setInputValue] = useState<string>(
+    initialSelected ? initialSelected.label : ""
+  );
+
+  const [open, setOpen] = useState(false);
+  const [filtered, setFiltered] = useState<SuggestionItem[]>([]);
+
+  // Si el parent cambia el value (suggestion.value), actualizamos selected + label mostrado
   useEffect(() => {
-    if (controlledValue !== undefined) {
-      setInputValue(controlledValue);
-    }
-  }, [controlledValue]);
+    const found = findByValue(controlledValue);
+    setSelected(found);
+    setInputValue(found ? found.label : "");
+  }, [controlledValue, suggestions]);
 
   // Filtrar sugerencias o mostrar todas si input vacío y menú abierto
   useEffect(() => {
@@ -41,11 +59,9 @@ export function SuggestionInput({
       return;
     }
     if (inputValue.trim() === "") {
-      // Mostrar todas las sugerencias si input está vacío y menú abierto
       setFiltered(suggestions);
       return;
     }
-    // Filtrar normalmente
     const filteredSuggestions = suggestions.filter((item) =>
       item.label.toLowerCase().includes(inputValue.toLowerCase())
     );
@@ -66,10 +82,27 @@ export function SuggestionInput({
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, []);
 
+  // Click en una suggestion
   function handleSelect(item: SuggestionItem) {
+    setSelected(item);
     setInputValue(item.label);
     setOpen(false);
     onSelect?.(item);
+  }
+
+  // Cambios en el input: si el texto coincide EXACTO con un label -> seleccionada esa suggestion
+  // si no, no hay selección (selected = null) y avisamos con null
+  function handleChangeInput(value: string) {
+    setInputValue(value);
+    setOpen(true);
+
+    const matched =
+      suggestions.find(
+        (s) => s.label.toLowerCase().trim() === value.toLowerCase().trim()
+      ) ?? null;
+
+    setSelected(matched);
+    onSelect?.(matched);
   }
 
   return (
@@ -79,9 +112,11 @@ export function SuggestionInput({
         type="text"
         placeholder={placeholder}
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={(e) => handleChangeInput(e.target.value)}
         onFocus={() => setOpen(true)}
+        onKeyDown={onKeyDown}
         autoComplete="off"
+        ref={ref}
       />
       {open && (
         <ul className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-300 bg-white shadow-lg">
@@ -89,7 +124,9 @@ export function SuggestionInput({
             filtered.map((item) => (
               <li
                 key={item.value}
-                className="flex cursor-pointer items-center gap-2 px-3 py-2 hover:bg-gray-100 text-[12px]"
+                className={`flex cursor-pointer items-center gap-2 px-3 py-2 text-[12px] hover:bg-gray-100 ${
+                  selected?.value === item.value ? "bg-gray-100" : ""
+                }`}
                 onClick={() => handleSelect(item)}
               >
                 {item.icon && (

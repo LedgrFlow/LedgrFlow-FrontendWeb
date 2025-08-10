@@ -4,14 +4,27 @@ import React, { useState, useRef, useEffect } from "react";
 import { LayoutBaseNotes } from "./layout-base.notes";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CalendarSelect } from "@/components/inputs/date";
-import { SuggestionInput } from "@/components/inputs/suggestion-input";
+import {
+  SuggestionInput,
+  type SuggestionItem,
+} from "@/components/inputs/suggestion-input";
 import { currencies } from "@/config/global/suggestions";
 import { InputAmount } from "@/components/inputs/input-amount";
 
+export interface SuggestionBlock {
+  accounts: SuggestionItem[];
+  taxes: SuggestionItem[];
+}
+
+export interface DefaultsBlock {
+  currency: string;
+}
 interface TransactionProps {
   block: Block;
   index: number;
   indexBlock: number | number[];
+  suggestions?: SuggestionBlock;
+  defaults?: DefaultsBlock;
   onKeyDown: (
     e: React.KeyboardEvent<HTMLDivElement>,
     block: Block,
@@ -33,6 +46,8 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
     draggableProvided,
     draggableSnapshot,
     onUpdateBlock,
+    defaults,
+    suggestions,
   } = props;
   const parsed = LedgerParser.parse(block.lines.join("\n"));
   const detailsTransaction = parsed?.[0];
@@ -74,12 +89,12 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
   const taxRefs = useRef<(HTMLInputElement | null)[]>([]);
   const focusIndex = useRef<number | null>(null);
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(e.target.value);
+  const handleDateChange = (value: string) => {
+    setDate(value);
   };
 
-  const handleVerifiedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setVerified(e.target.checked);
+  const handleVerifiedChange = (value: boolean) => {
+    setVerified(value);
   };
 
   const handleDescriptionChange = (e: React.InputEvent<HTMLDivElement>) => {
@@ -231,8 +246,14 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
         <>
           <div className="flex w-full items-center gap-2 work-sans-400 mb-3">
             {/* Fecha */}
-            <CalendarSelect />
-            <Checkbox />
+            <CalendarSelect
+              defaultValue={detailsTransaction.date}
+              onChange={handleDateChange}
+            />
+            <Checkbox
+              checked={detailsTransaction.verified}
+              onCheckedChange={handleVerifiedChange}
+            />
             {/* <input
               type="date"
               defaultValue={detailsTransaction.date}
@@ -258,7 +279,7 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
               defaultValue={detailsTransaction.description}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full"
+              className="w-full outline-none"
             />
           </div>
 
@@ -277,8 +298,24 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
             >
               {/* Cuenta ahora con input */}
               <SuggestionInput
-                suggestions={currencies}
-                onSelect={(item) => console.log("Selected:", item)}
+                suggestions={suggestions?.accounts || []}
+                onSelect={(item) => {
+                  const value = item.value;
+                  const newAccounts = [...accounts];
+                  newAccounts[i] = {
+                    ...newAccounts[i],
+                    account: value,
+                  };
+                  handleAccountsChange(newAccounts);
+                }}
+                value={acc.account}
+                onKeyDown={(e) => {
+                  if (e.key === "Backspace" && e.currentTarget.value === "") {
+                    e.preventDefault();
+                    handleRemoveAccount(i);
+                  }
+                }}
+                ref={(el) => (accountRefs.current[i] = el)}
               />
               {/* <input
                 type="text"
@@ -341,13 +378,48 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
 
               <div className="w-[50%] flex items-center gap-2">
                 {/* Monto */}
-                <InputAmount />
+                <InputAmount
+                  defaultValue={acc?.amount}
+                  onChange={(value) => {
+                    const newAccounts = [...accounts];
+                    newAccounts[i] = {
+                      ...newAccounts[i],
+                      amount: value,
+                    };
+                    handleAccountsChange(newAccounts);
+                  }}
+                />
                 <SuggestionInput
                   placeholder="Choose a currency..."
+                  value={defaults?.currency ?? ""}
                   suggestions={currencies}
-                  onSelect={(item) => console.log("Selected:", item)}
+                  onSelect={(item) => {
+                    const value = item.value;
+                    const newAccounts = [...accounts];
+                    newAccounts[i] = {
+                      ...newAccounts[i],
+                      unit: value,
+                    };
+                    handleAccountsChange(newAccounts);
+                  }}
                 />
-                <SuggestionInput suggestions={currencies} />
+                <SuggestionInput
+                  suggestions={suggestions?.taxes || []}
+                  placeholder="Choose a tax..."
+                  value={acc?.tax || ""}
+                  onSelect={(item) => {
+                    const value = item.value;
+                    const newAccounts = [...accounts];
+                    newAccounts[i] = {
+                      ...newAccounts[i],
+                      tax: value,
+                    };
+                    handleAccountsChange(newAccounts);
+                  }}
+                  onKeyDown={(e) => {
+                    handleTaxKeyDown(e, i);
+                  }}
+                />
               </div>
 
               {/* Impuesto */}

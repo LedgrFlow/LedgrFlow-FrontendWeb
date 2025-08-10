@@ -20,17 +20,22 @@ import {
   deleteLineByIndex,
   focusLine,
 } from "./notes.controller";
+import type { DefaultsBlock, SuggestionBlock } from "./components/transaction.notes";
 
 interface NotionLikeEditorProps {
   blocks: Block[];
   onChange?: (newBlocks: Block[]) => void;
   renderComponents?: Record<string, any>;
+  suggestions?: SuggestionBlock;
+  defaults?: DefaultsBlock;
 }
 
 export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
   blocks,
   onChange,
   renderComponents,
+  suggestions,
+  defaults,
 }) => {
   const [orderedBlocks, setOrderedBlocks] = useState<Block[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -183,6 +188,7 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
 
   // sincronizar contenido editable sin romper cursor
   useEffect(() => {
+    console.log("orderedBlocks", orderedBlocks);
     orderedBlocks.forEach((block) => {
       if (block.type === "line") {
         const el = editableRefs.current.get(block.index as number);
@@ -213,6 +219,8 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
                       block={block}
                       key={block.id}
                       index={i}
+                      suggestions={suggestions}
+                      defaults={defaults}
                       indexBlock={block.index}
                       onLineChange={onLineChange}
                       onKeyDown={onKeyDown}

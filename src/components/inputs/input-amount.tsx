@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 
 function formatNumber(value: string) {
+  // Detectar si es negativo
+  const isNegative = value.trim().startsWith("-");
+
   // Eliminar todo excepto dígitos y punto decimal
   const cleanValue = value.replace(/[^\d.]/g, "");
 
@@ -11,14 +14,30 @@ function formatNumber(value: string) {
   // Formatear parte entera con comas
   const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // Reconstruir con decimal si existe
-  return decimalPart !== undefined
-    ? `${formattedInteger}.${decimalPart}`
-    : formattedInteger;
+  // Reconstruir con decimal si existe y con signo si es negativo
+  return (
+    (isNegative ? "-" : "") +
+    (decimalPart !== undefined
+      ? `${formattedInteger}.${decimalPart}`
+      : formattedInteger)
+  );
 }
 
-export function InputAmount() {
-  const [value, setValue] = useState("");
+function parseNumber(formattedValue: string): number {
+  // Eliminar comas y convertir a número
+  // El signo negativo se mantiene porque no lo eliminamos
+  const cleanValue = formattedValue.replace(/,/g, "");
+  const num = Number(cleanValue);
+  return isNaN(num) ? 0 : num;
+}
+
+interface InputAmountProps {
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+}
+
+export function InputAmount({ defaultValue, onChange }: InputAmountProps) {
+  const [value, setValue] = useState(defaultValue?.toString() || "");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
@@ -35,13 +54,20 @@ export function InputAmount() {
     }
   };
 
+  useEffect(() => {
+    if (onChange && value) {
+      const valueString = parseNumber(value).toString();
+      onChange(valueString);
+    }
+  }, [value]);
+
   return (
     <div className="flex items-center w-full max-w-[150px] gap-2">
       <Input
         className="w-full"
         type="text"
         placeholder="0.00"
-        value={value}
+        value={formatNumber(value)}
         onChange={handleChange}
         inputMode="decimal" // para que el teclado móvil muestre números y punto
       />

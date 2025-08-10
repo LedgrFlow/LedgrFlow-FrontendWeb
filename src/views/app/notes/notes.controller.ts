@@ -1,6 +1,7 @@
 // --- UTILIDADES PARA BLOQUES ---
 
 import type { Block } from "@/types/backend/ledger-back.types";
+import React from "react";
 
 /**
  * Ordena bloques por el primer índice (en caso de arrays) o índice simple.
@@ -105,4 +106,27 @@ export function focusLine(
       sel?.addRange(range);
     }
   }, 0);
+}
+
+// nuevo hook para manejar el menú contextual
+export function useSlashMenu() {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [position, setPosition] = React.useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+  const [currentIndex, setCurrentIndex] = React.useState<number | null>(null);
+
+  const openMenu = (index: number, rect: DOMRect) => {
+    setPosition({ x: rect.left, y: rect.bottom });
+    setCurrentIndex(index);
+    setIsOpen(true);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+    setCurrentIndex(null);
+  };
+
+  return { isOpen, position, currentIndex, openMenu, closeMenu };
 }

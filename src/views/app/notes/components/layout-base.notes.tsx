@@ -52,25 +52,11 @@ export function LayoutBaseNotes({
 
         backgroundColor: draggableSnapshot.isDragging ? "#e0f7fa" : "white",
         display: "flex",
-        alignItems: "center",
+        alignItems: "start",
         ...draggableProvided.draggableProps.style,
       }}
       className="border-b border-transparent hover:border-b-neutral-400/40 transition duration-200"
     >
-      {/* {!isLast && (
-        <button
-          onClick={() => insertLineAfterIndex(block.index as number)}
-          style={{
-            marginLeft: 8,
-            cursor: "pointer",
-            userSelect: "none",
-          }}
-          className="p-2 hover:bg-neutral-500/10 rounded-2xl mr-2 transition duration-200"
-          aria-label="Agregar línea después"
-        >
-          <PlusIcon className="w-6 h-6 fill-current text-gray-600/20" />
-        </button>
-      )} */}
       <button
         onClick={() => insertLineAfterIndex(block.index as number)}
         style={{

@@ -37,8 +37,10 @@ export const ComponentLine: React.FC<LineProps> = (props: LineProps) => {
         }
         onKeyDown={(e) => onKeyDown(e, block, index)}
         tabIndex={0}
-        className="work-sans-400"
-      />
+        className="work-sans-400 outline-none"
+      >
+        {block?.line || ""}
+      </div>
     </LayoutBaseNotes>
   );
 };

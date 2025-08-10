@@ -137,6 +137,7 @@ export interface Snippet {
 export interface Metadata {
   currency: string;
   snippet: Snippet;
+  taxes: string[];
 }
 
 export interface StateResultDetail {
