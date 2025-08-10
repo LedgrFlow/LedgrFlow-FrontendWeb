@@ -205,12 +205,14 @@ export interface ResponseLedgerParser {
 export type Block = LineBlock | TransactionBlock;
 
 export type LineBlock = {
+  id?: string;
   index: number;
   line: string;
   type: "line";
 };
 
 export type TransactionBlock = {
+  id?: string;
   index: number[]; // puede ser varios índices
   lines: string[];
   type: "transaction";

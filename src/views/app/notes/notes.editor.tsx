@@ -20,7 +20,10 @@ import {
   deleteLineByIndex,
   focusLine,
 } from "./notes.controller";
-import type { DefaultsBlock, SuggestionBlock } from "./components/transaction.notes";
+import type {
+  DefaultsBlock,
+  SuggestionBlock,
+} from "./components/transaction.notes";
 
 interface NotionLikeEditorProps {
   blocks: Block[];
@@ -47,7 +50,7 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
   useEffect(() => {
     const withIds = blocks.map((b) => ({
       ...b,
-      id: b.id || crypto.randomUUID(),
+      id: b?.id || crypto.randomUUID(),
     }));
     setOrderedBlocks(sortBlocks(withIds));
   }, [blocks]);

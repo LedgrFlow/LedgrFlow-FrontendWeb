@@ -111,6 +111,16 @@ const rootPaths = {
       icon: <User className={size_icons} />,
     },
   },
+
+  // Rutas de prueba aun no terminadas
+  test: {
+    prefix: "/testing",
+    notion: {
+      label: "Notion",
+      href: "notion",
+      icon: <ClipboardList className={size_icons} />,
+    },
+  },
 };
 
 /**

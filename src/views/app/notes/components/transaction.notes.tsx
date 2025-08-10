@@ -97,10 +97,10 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
     setVerified(value);
   };
 
-  const handleDescriptionChange = (e: React.InputEvent<HTMLDivElement>) => {
-    const text = e.currentTarget.value || "";
-    setDescription(text);
-  };
+  // const handleDescriptionChange = (e: React.InputEvent<HTMLDivElement>) => {
+  //   const text = e.currentTarget.value || "";
+  //   setDescription(text);
+  // };
 
   const handleAccountsChange = (newAccounts: typeof accounts) => {
     setAccounts(newAccounts); // Solo actualiza localmente
@@ -178,8 +178,8 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
     if (focusIndex.current !== null) {
       const idx = focusIndex.current;
       if (accounts[idx]) {
-        // Intentamos enfocar tax si es nuevo, sino account
-        taxRefs.current[idx]?.focus() || accountRefs.current[idx]?.focus();
+        // Intenta enfocar taxRefs primero, si no existe, enfoca accountRefs
+        taxRefs.current[idx]?.focus() ?? accountRefs.current[idx]?.focus();
       }
       focusIndex.current = null;
     }
@@ -254,26 +254,7 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
               checked={detailsTransaction.verified}
               onCheckedChange={handleVerifiedChange}
             />
-            {/* <input
-              type="date"
-              defaultValue={detailsTransaction.date}
-              onChange={handleDateChange}
-              style={{ marginBottom: 4 }}
-            /> */}
 
-            {/* Checkbox verified */}
-            {/* <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
-             
-              <input
-                type="checkbox"
-                defaultChecked={detailsTransaction.verified}
-                checked={verified}
-                onChange={handleVerifiedChange}
-              />
-              Verificada
-            </label> */}
-
-            {/* Descripción */}
             <input
               type="text"
               defaultValue={detailsTransaction.description}
@@ -300,7 +281,7 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
               <SuggestionInput
                 suggestions={suggestions?.accounts || []}
                 onSelect={(item) => {
-                  const value = item.value;
+                  const value = item?.value || "";
                   const newAccounts = [...accounts];
                   newAccounts[i] = {
                     ...newAccounts[i],
@@ -315,66 +296,10 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
                     handleRemoveAccount(i);
                   }
                 }}
-                ref={(el) => (accountRefs.current[i] = el)}
+                ref={(el) => {
+                  if (el) accountRefs.current[i] = el;
+                }}
               />
-              {/* <input
-                type="text"
-                defaultValue={acc.account}
-                // value={accounts[i].account}
-                onChange={(e) => {
-                  const newAccounts = [...accounts];
-                  newAccounts[i] = {
-                    ...newAccounts[i],
-                    account: e.target.value,
-                  };
-                  handleAccountsChange(newAccounts);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Backspace" && e.currentTarget.value === "") {
-                    e.preventDefault();
-                    handleRemoveAccount(i);
-                  }
-                }}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: 4,
-                  padding: 4,
-                  minHeight: "28px",
-                  width: "100%",
-                }}
-                ref={(el) => (accountRefs.current[i] = el)}
-              /> */}
-
-              {/* <input
-                type="number"
-                value={acc.amount}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  const newAccounts = [...accounts];
-                  newAccounts[i] = {
-                    ...newAccounts[i],
-                    amount: value === "" ? 0 : Number(value),
-                  };
-                  handleAccountsChange(newAccounts);
-                }}
-                style={{ width: "100%" }}
-              /> */}
-
-              {/* Unidad */}
-              {/* <input
-                type="text"
-                value={acc.unit}
-                placeholder="Unidad"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  const newAccounts = [...accounts];
-                  newAccounts[i] = {
-                    ...newAccounts[i],
-                    unit: value,
-                  };
-                  handleAccountsChange(newAccounts);
-                }}
-              /> */}
 
               <div className="w-[50%] flex items-center gap-2">
                 {/* Monto */}
@@ -421,24 +346,6 @@ export const ComponentTransaction: React.FC<TransactionProps> = (
                   }}
                 />
               </div>
-
-              {/* Impuesto */}
-              {/* <input
-                type="text"
-                value={acc.tax || ""}
-                placeholder="Impuesto"
-                ref={(el) => (taxRefs.current[i] = el)}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  const newAccounts = [...accounts];
-                  newAccounts[i] = {
-                    ...newAccounts[i],
-                    tax: value,
-                  };
-                  handleAccountsChange(newAccounts);
-                }}
-                onKeyDown={(e) => handleTaxKeyDown(e, i)}
-              /> */}
             </div>
           ))}
         </>

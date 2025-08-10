@@ -43,7 +43,10 @@ export const AppRoutes = [
       />
     </Route>
     <Route path={rootPaths.index.profile.href} element={<ProfileView />} />,
-    <Route path={"/test-editor"} element={<NotesView />} />,
+    <Route
+      path={`${rootPaths.test.prefix}/${rootPaths.test.notion.href}`}
+      element={<NotesView />}
+    />
   </Route>,
 
   <Route

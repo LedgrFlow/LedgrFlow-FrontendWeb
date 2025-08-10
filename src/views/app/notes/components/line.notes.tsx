@@ -1,5 +1,4 @@
 import React from "react";
-import { Draggable } from "@hello-pangea/dnd";
 import type { Block } from "@/types/backend/ledger-back.types";
 import { LayoutBaseNotes } from "./layout-base.notes";
 
@@ -21,6 +20,17 @@ interface LineProps {
 
 export const ComponentLine: React.FC<LineProps> = (props: LineProps) => {
   const { block, index, onLineChange, onKeyDown, editableRefs } = props;
+
+  if (block.type === "transaction") {
+    // Manejar TransactionBlock (¿qué debería mostrarse aquí?)
+    return (
+      <LayoutBaseNotes {...props}>
+        <div>
+          Este es un bloque de transacción y no debería tener líneas editables.
+        </div>
+      </LayoutBaseNotes>
+    );
+  }
 
   return (
     <LayoutBaseNotes {...props}>
