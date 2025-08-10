@@ -11,7 +11,6 @@ import {
   Draggable,
   type DropResult,
 } from "@hello-pangea/dnd";
-
 import type { Block } from "@/types/backend/ledger-back.types";
 import {
   sortBlocks,
@@ -21,8 +20,6 @@ import {
   deleteLineByIndex,
   focusLine,
 } from "./notes.controller";
-
-// --- COMPONENTE REACT ---
 
 interface NotionLikeEditorProps {
   blocks: Block[];
@@ -36,43 +33,49 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
   renderComponents,
 }) => {
   const [orderedBlocks, setOrderedBlocks] = useState<Block[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
 
   // refs index -> elemento contentEditable
   const editableRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
-  // ordenar y setear bloques al inicio
+  // Asignar IDs únicos a cada bloque
   useEffect(() => {
-    setOrderedBlocks(sortBlocks(blocks));
+    const withIds = blocks.map((b) => ({
+      ...b,
+      id: b.id || crypto.randomUUID(),
+    }));
+    setOrderedBlocks(sortBlocks(withIds));
   }, [blocks]);
 
-  const onDragEnd = useCallback(
-    (result: DropResult) => {
-      if (!result.destination) return;
+  const onDragStart = () => setIsDragging(true);
+  const onDragEnd = (result: DropResult) => {
+    setIsDragging(false);
+    if (!result.destination) return;
 
-      const reordered = Array.from(orderedBlocks);
-      const [removed] = reordered.splice(result.source.index, 1);
-      reordered.splice(result.destination.index, 0, removed);
+    const reordered = Array.from(orderedBlocks);
+    const [removed] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, removed);
 
-      const updated = updateIndexes(reordered);
-      setOrderedBlocks(updated);
-      if (onChange) onChange(updated);
+    const updated = updateIndexes(reordered);
+    setOrderedBlocks(updated);
+    onChange?.(updated);
+  };
+
+  const onLineChange = useCallback(
+    (index: number, newText: string) => {
+      if (isDragging) return;
+      setOrderedBlocks((old) =>
+        old.map((b) =>
+          b.type === "line" && b.index === index ? { ...b, line: newText } : b
+        )
+      );
     },
-    [orderedBlocks, onChange]
+    [isDragging]
   );
-
-  const onLineChange = useCallback((index: number, newText: string) => {
-    setOrderedBlocks((old) =>
-      old.map((b) => {
-        if (b.type === "line" && b.index === index) {
-          return { ...b, line: newText };
-        }
-        return b;
-      })
-    );
-  }, []);
 
   const insertLineAfterIndex = useCallback(
     (afterIndex: number) => {
+      if (isDragging) return;
       setOrderedBlocks((old) => {
         const { blocks: updated, insertedIndex } = insertLineAfter(
           old,
@@ -81,24 +84,40 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
         if (insertedIndex !== null) {
           focusLine(editableRefs.current, insertedIndex);
         }
-        if (onChange) onChange(updated);
+        onChange?.(updated);
         return updated;
       });
     },
-    [onChange]
+    [isDragging, onChange]
   );
 
   const insertLineAtEndHandler = useCallback(() => {
+    if (isDragging) return;
     setOrderedBlocks((old) => {
       const { blocks: updated, insertedIndex } = insertLineAtEnd(old);
       focusLine(editableRefs.current, insertedIndex);
-      if (onChange) onChange(updated);
+      onChange?.(updated);
       return updated;
     });
-  }, [onChange]);
+  }, [isDragging, onChange]);
+
+  const onUpdateBlock = useCallback(
+    (index, updatedBlock) => {
+      if (isDragging) return;
+      setOrderedBlocks((oldBlocks) => {
+        const newBlocks = oldBlocks.map((b, i) =>
+          i === index ? updatedBlock : b
+        );
+        onChange?.(newBlocks);
+        return newBlocks;
+      });
+    },
+    [isDragging, onChange]
+  );
 
   const deleteLineIfEmptyHandler = useCallback(
     (index: number) => {
+      if (isDragging) return;
       setOrderedBlocks((old) => {
         const pos = old.findIndex(
           (b) => b.type === "line" && b.index === index
@@ -121,18 +140,18 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
           if (firstLine)
             focusLine(editableRefs.current, firstLine.index as number);
         }
-        if (onChange) onChange(updated);
+        onChange?.(updated);
         return updated;
       });
     },
-    [onChange]
+    [isDragging, onChange]
   );
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>, block: Block, idx: number) => {
+      if (isDragging) return;
       if (e.key === "Enter") {
         e.preventDefault();
-
         const isLast = idx === orderedBlocks.length - 1;
         if (isLast && block.type === "line") {
           insertLineAtEndHandler();
@@ -154,6 +173,7 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
       }
     },
     [
+      isDragging,
       orderedBlocks.length,
       insertLineAfterIndex,
       insertLineAtEndHandler,
@@ -174,7 +194,7 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
   }, [orderedBlocks]);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <Droppable droppableId="notion-editor">
         {(provided) => (
           <div
@@ -187,26 +207,17 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
               if (!Renderer) return null;
 
               return (
-                <Draggable
-                  key={
-                    Array.isArray(block.index)
-                      ? block.index.join(",")
-                      : block.index
-                  }
-                  draggableId={
-                    Array.isArray(block.index)
-                      ? block.index.join(",")
-                      : String(block.index)
-                  }
-                  index={i}
-                >
+                <Draggable key={block.id} draggableId={block.id} index={i}>
                   {(provided, snapshot) => (
                     <Renderer
                       block={block}
+                      key={block.id}
                       index={i}
+                      indexBlock={block.index}
                       onLineChange={onLineChange}
                       onKeyDown={onKeyDown}
                       insertLineAfterIndex={insertLineAfterIndex}
+                      onUpdateBlock={onUpdateBlock}
                       editableRefs={editableRefs}
                       isLast={i === orderedBlocks.length - 1}
                       draggableProvided={provided}
@@ -216,7 +227,6 @@ export const NotionLikeEditor: React.FC<NotionLikeEditorProps> = ({
                 </Draggable>
               );
             })}
-
             {provided.placeholder}
           </div>
         )}

@@ -77,7 +77,10 @@ export function insertLineAtEnd(blocks: Block[]): {
 /**
  * Elimina línea por índice y devuelve el nuevo arreglo reindexado.
  */
-export function deleteLineByIndex(blocks: Block[], indexToDelete: number): Block[] {
+export function deleteLineByIndex(
+  blocks: Block[],
+  indexToDelete: number
+): Block[] {
   const filtered = blocks.filter(
     (b) => !(b.type === "line" && b.index === indexToDelete)
   );
@@ -86,7 +89,10 @@ export function deleteLineByIndex(blocks: Block[], indexToDelete: number): Block
 
 // --- FUNCIÓN DE FOCO EN UN ELEMENTO POR REF ---
 // Recibe Map de refs y un índice, enfoca el elemento (usa setTimeout para evitar problemas de render)
-export function focusLine(editableRefs: Map<number, HTMLDivElement>, index: number) {
+export function focusLine(
+  editableRefs: Map<number, HTMLDivElement>,
+  index: number
+) {
   setTimeout(() => {
     const el = editableRefs.get(index);
     if (el) {
