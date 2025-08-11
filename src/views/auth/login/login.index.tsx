@@ -25,7 +25,7 @@ export default function Login() {
         }}
         className="hidden lg:flex lg:w-1/2 bg-cover bg-center bg-no-repeat bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-500 dark:via-purple-500 dark:to-pink-500 relative overflow-hidden"
       >
-        <div className="absolute inset-0 bg-black/40 w-full h-full transition-all duration-300 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-black/40 w-full h-full transition-all duration-300"></div>
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 w-full h-full hover:backdrop-blur-md transition-all duration-300">
           <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-8">
             <Scale className="w-10 h-10 text-white" />
@@ -44,7 +44,7 @@ export default function Login() {
       </div>
 
       {/* Right side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 z-10">
         <div className="w-full max-w-md space-y-8">
           {/* Header */}
           <div className="text-center">
@@ -193,7 +193,7 @@ export default function Login() {
               ¿Nuevo en nuestra plataforma?{" "}
               <Link
                 to={rootPaths?.auth.register.href}
-                className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
+                className="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors hover:underline"
               >
                 Crea una cuenta
               </Link>
