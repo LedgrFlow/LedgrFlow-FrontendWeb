@@ -26,7 +26,7 @@ const Register: React.FC = () => {
           backgroundImage: `url(https://images.pexels.com/photos/16282306/pexels-photo-16282306.jpeg)`,
         }}
       >
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-black/40 pointer-events-none"></div>
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 w-full h-full hover:backdrop-blur-md transition-all duration-300">
           <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-8">
             <Scale className="w-10 h-10 text-white" />
